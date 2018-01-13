@@ -1,28 +1,29 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import {withRouter} from 'react-router-dom'
 
 import 'app.scss'
 
 import {fetchInitData} from './store/app/actions'
 
-import Hello from './components/hello'
+import {Main} from './views'
 
 export class Root extends Component {
   componentDidMount () {
     this.props.fetchInitData()
   }
+
   render () {
     return (
       <div className='grid-container clearfix'>
-        <Hello isLoaded={this.props.isLoaded} />
+        <Main />
       </div>
     )
   }
 }
 
 Root.propTypes = {
-  isLoaded: React.PropTypes.bool.isRequired,
   fetchInitData: React.PropTypes.func.isRequired
 }
 
@@ -39,4 +40,4 @@ function mapDispatchToProps (dispatch) {
 }
 
 // Wrap the component to inject dispatch and state into it
-export default connect(mapStateToProps, mapDispatchToProps)(Root)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Root))
