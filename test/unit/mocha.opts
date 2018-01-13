@@ -1,0 +1,7 @@
+src/**/*._test.js
+--require test/unit/env_setup.js
+test/unit/mocha_setup.js
+--recursive
+--timeout 30000
+--reporter xunit-file
+--compilers js:babel-register

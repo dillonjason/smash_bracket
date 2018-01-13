@@ -1,0 +1,8 @@
+src/**/*._test.js
+--require test/unit/env_setup.js
+test/unit/mocha_setup.js
+--recursive
+--watch
+--timeout 30000
+--reporter spec
+--compilers js:babel-register

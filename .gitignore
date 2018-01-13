@@ -1,0 +1,12 @@
+// IDE Files
+.idea
+.vscode
+
+// Node
+node_modules
+package-lock.json
+
+// Logs and temp files
+dist
+temp
+*.log
