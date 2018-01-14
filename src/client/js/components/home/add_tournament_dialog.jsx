@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
-import {toggleAddTournament, clearFormField} from './../../store/home/actions'
+import {toggleAddTournament, clearFormField, submitAddTournament} from './../../store/home/actions'
 
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog'
 import Button from 'material-ui/Button'
@@ -15,7 +15,7 @@ const Transition = (props) => (
   <Slide direction='up' {...props} />
 )
 
-const AddTournamentDialogComponent = ({addTournamentOpen, toggleAddTournament, clearFormField}) => {
+const AddTournamentDialogComponent = ({addTournamentOpen, toggleAddTournament, clearFormField, submitAddTournament}) => {
   const clearAndClose = () => {
     toggleAddTournament()
     clearFormField()
@@ -43,7 +43,7 @@ const AddTournamentDialogComponent = ({addTournamentOpen, toggleAddTournament, c
         <Button onClick={clearAndClose} color='primary'>
           Cancel
         </Button>
-        <Button onClick={toggleAddTournament} color='primary'>
+        <Button onClick={submitAddTournament} color='primary'>
           Submit
         </Button>
       </DialogActions>
@@ -54,7 +54,8 @@ const AddTournamentDialogComponent = ({addTournamentOpen, toggleAddTournament, c
 AddTournamentDialogComponent.propTypes = {
   addTournamentOpen: PropTypes.bool.isRequired,
   toggleAddTournament: PropTypes.func.isRequired,
-  clearFormField: PropTypes.func.isRequired
+  clearFormField: PropTypes.func.isRequired,
+  submitAddTournament: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -63,7 +64,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   toggleAddTournament: bindActionCreators(toggleAddTournament, dispatch),
-  clearFormField: bindActionCreators(clearFormField, dispatch)
+  clearFormField: bindActionCreators(clearFormField, dispatch),
+  submitAddTournament: bindActionCreators(submitAddTournament, dispatch)
 })
 
 export const AddTournamentDialog = connect(mapStateToProps, mapDispatchToProps)(AddTournamentDialogComponent)

@@ -19,3 +19,9 @@ export function clearFormField () {
     type: ACTIONS.CLEAR_TOURNAMENT_ADD_FORM_FIELD
   }
 }
+
+export function submitAddTournament () {
+  return {
+    type: ACTIONS.CREATE_TOURNAMENT
+  }
+}
