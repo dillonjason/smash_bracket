@@ -5,6 +5,7 @@ import {Header} from './../components/main/header'
 
 // Views
 import {Home} from './home'
+import {PlayersView} from './players'
 
 export class Main extends Component {
   render () {
@@ -13,6 +14,7 @@ export class Main extends Component {
         <Header />
         <div className='content'>
           <Route exact path='/' component={Home} />
+          <Route path='/players' component={PlayersView} />
         </div>
       </div>
     )
