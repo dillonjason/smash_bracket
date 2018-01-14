@@ -1,0 +1,15 @@
+.main-view {
+  padding-top: 56px;
+
+  @media (min-width:0px) and (orientation: landscape) {
+    padding-top: 48px;
+  }
+
+  @media (min-width:600px) {
+    padding-top: 64px;
+  }
+
+  .content {
+    padding: 8px
+  }
+}

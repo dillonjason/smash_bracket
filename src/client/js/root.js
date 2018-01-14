@@ -16,9 +16,7 @@ export class Root extends Component {
 
   render () {
     return (
-      <div className='grid-container clearfix'>
-        <Main />
-      </div>
+      <Main />
     )
   }
 }

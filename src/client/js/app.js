@@ -6,16 +6,21 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import {BrowserRouter} from 'react-router-dom'
+import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles'
 
 import Root from './root'
 import { configureStore } from './store/store'
+import {theme} from './theme'
 
-let store = configureStore()
+const store = configureStore()
+const appTheme = createMuiTheme(theme)
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <Root />
+      <MuiThemeProvider theme={appTheme}>
+        <Root />
+      </MuiThemeProvider>
     </BrowserRouter>
   </Provider>,
   document.getElementById('app')
