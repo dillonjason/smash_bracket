@@ -12,7 +12,7 @@ export class Main extends Component {
       <div className='main-view'>
         <Header />
         <div className='content'>
-          <Route exact path='/smash_bracket' component={Home} />
+          <Route exact path='/' component={Home} />
         </div>
       </div>
     )
