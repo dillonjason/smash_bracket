@@ -29,7 +29,7 @@ export const TournamentsTableComponent = ({tournaments, classes}) => {
         <TableHead>
           <TableRow>
             <TableCell>Date</TableCell>
-            <TableCell>Rounds Remaining</TableCell>
+            <TableCell>Sets Remaining</TableCell>
             <TableCell>Winner</TableCell>
             <TableCell />
           </TableRow>
