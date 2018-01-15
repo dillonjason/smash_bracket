@@ -5,8 +5,11 @@ import {bindActionCreators} from 'redux'
 import {graphql} from 'react-apollo'
 import gql from 'graphql-tag'
 import flow from 'lodash/flow'
+
 import {TournamentsTable} from './tournaments_table'
 import { AddTournamentDialog } from './add_tournament_dialog'
+
+import {Loading} from '../shared/loading'
 import {homeDataReloaded} from './../../store/home/actions'
 
 export class TournamentsComponent extends Component {
@@ -22,7 +25,7 @@ export class TournamentsComponent extends Component {
 
     return (
       <div className='tournaments-component'>
-        {loading && 'Loading...'}
+        {loading && <Loading />}
         {error && 'Error'}
         {allTournaments && <TournamentsTable tournaments={allTournaments} />}
         <AddTournamentDialog />

@@ -10,6 +10,7 @@ import TextField from 'material-ui/TextField'
 import {withStyles} from 'material-ui/styles'
 
 import {MultiSelect} from './../shared/multi_select'
+import {Loading} from '../shared/loading'
 
 import {updateFormField} from '../../store/home/actions'
 
@@ -36,7 +37,7 @@ const AddTournamentFormComponent = ({classes, data, date, players, updateFormFie
 
   return (
     <div className='add-tournament-form-component'>
-      {loading && 'Loading...'}
+      {loading && <Loading />}
       {error && 'Error'}
       {allPlayers &&
         <div className={classes.form}>

@@ -3,13 +3,14 @@ import PropTypes from 'prop-types'
 import {graphql} from 'react-apollo'
 import gql from 'graphql-tag'
 import {PlayersTable} from './players_table'
+import {Loading} from '../shared/loading'
 
 export const PlayersComponent = ({data}) => {
   const {loading, error, allPlayers} = data
 
   return (
     <div className='tournaments-component'>
-      {loading && 'Loading...'}
+      {loading && <Loading />}
       {error && 'Error'}
       {allPlayers && <PlayersTable players={allPlayers} />}
     </div>
