@@ -5,6 +5,7 @@
   "private": true,
   "description": "node microapp for smash_bracket",
   "scripts": {
+    "postinstall": "npm run build",
     "start": "node util/es6_mode --file src/server/server.js",
     "predev": "npm run clean",
     "dev": "NODE_ENV=dev nodemon --inspect util/es6_mode --file src/server/server.js",
