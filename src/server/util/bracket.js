@@ -224,7 +224,7 @@ export class Bracket {
 
     _.forEach(this.losers, (round, roundIndex) => {
       _.forEach(round, set => {
-        const winnerGoesTo = _.find(winnerSets, nextSet => nextSet.firstPlayer === set.id || nextSet.secondPlayer === set.id)
+        const winnerGoesTo = _.find(loserSets, nextSet => nextSet.firstPlayer === set.id || nextSet.secondPlayer === set.id)
         if (winnerGoesTo) {
           set.winnerSet = winnerGoesTo.id
         }
