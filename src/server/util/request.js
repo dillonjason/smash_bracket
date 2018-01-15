@@ -48,7 +48,7 @@ export class Request {
    * @param {Object} options - Request options, optional
    * @returns {Promise}
    */
-  get (uri, options = {}) {
+  get ({uri, options = {}}) {
     return this._makeRequest({ uri, options })
   }
 
@@ -59,7 +59,7 @@ export class Request {
    * @param {Object} options - Request options, optional
    * @returns {Promise}
    */
-  post (uri, data = {}, options = {}) {
+  post ({uri, data = {}, options = {}}) {
     _.set(options, 'body', JSON.stringify(data))
 
     if (!_.isEmpty(data)) {
