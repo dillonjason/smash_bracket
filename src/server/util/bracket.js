@@ -304,4 +304,12 @@ export class Bracket {
     await graphQl.connectSetsToSets({sets: allSets})
     await graphQl.connectSetsToTournament({sets: allSets, tournamentId})
   }
+
+  countSets () {
+    return _.concat(
+      this.winners,
+      this.losers,
+      this.finals
+    ).length
+  }
 }

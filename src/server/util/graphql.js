@@ -23,8 +23,8 @@ export class GraphQl {
     }
   }
 
-  async createTournament ({date, players}) {
-    const response = await this.request.post(this._getPostDate(createTournamentQuery({date})))
+  async createTournament ({date, players, numberOfSets}) {
+    const response = await this.request.post(this._getPostDate(createTournamentQuery({date, numberOfSets})))
     const data = await response.json()
     const tournamentId = data.data.createTournament.id
 

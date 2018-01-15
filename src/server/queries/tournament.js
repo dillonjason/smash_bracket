@@ -1,8 +1,8 @@
 import _ from 'lodash'
 
-export const createTournamentQuery = ({date}) => `
+export const createTournamentQuery = ({date, numberOfSets}) => `
   mutation {
-    createTournament(date: "${date}", isPublished: true) {
+    createTournament(date: "${date}", setsRemaining: ${numberOfSets}, isPublished: true) {
       id
     }
   }

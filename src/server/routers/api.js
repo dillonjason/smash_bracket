@@ -20,9 +20,9 @@ apiRouter
       ctx.throw('At least three players are required')
     }
 
-    const tournamentId = await graphQl.createTournament({date, players})
-
     const bracket = new Bracket({players})
+
+    const tournamentId = await graphQl.createTournament({date, players, numberOfSets: bracket.countSets()})
     await bracket.save({graphQl, tournamentId})
 
     ctx.status = 200
