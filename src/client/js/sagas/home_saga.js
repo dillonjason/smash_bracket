@@ -6,7 +6,7 @@ import {Api} from '../util/api'
 
 // Store Imports
 import { ACTIONS } from '../store/home/action_types'
-import {clearFormField, toggleAddTournament} from '../store/home/actions'
+import {clearFormField, toggleAddTournament, reloadHomeData} from '../store/home/actions'
 
 function * createTournament () {
   try {
@@ -14,6 +14,7 @@ function * createTournament () {
     yield Api.postCreateTournament({data})
     yield put(toggleAddTournament())
     yield put(clearFormField())
+    yield put(reloadHomeData())
   } catch (error) {
     console.error('Post Failed', error)
   }

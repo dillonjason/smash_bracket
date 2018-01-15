@@ -25,3 +25,15 @@ export function submitAddTournament () {
     type: ACTIONS.CREATE_TOURNAMENT
   }
 }
+
+export function reloadHomeData () {
+  return {
+    type: ACTIONS.RELOAD_HOME_DATA
+  }
+}
+
+export function homeDataReloaded () {
+  return {
+    type: ACTIONS.HOME_DATA_RELOADED
+  }
+}

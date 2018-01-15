@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { ACTIONS } from './action_types'
 
 const initialState = {
+  reloadHomeData: false,
   addTournamentOpen: false,
 
   date: new Date(),
@@ -27,6 +28,12 @@ function reducer (state = initialState, action) {
       _.set(newState, 'players', [])
 
       return newState
+
+    case ACTIONS.RELOAD_HOME_DATA:
+      return _.merge({}, state, {reloadHomeData: true})
+
+    case ACTIONS.HOME_DATA_RELOADED:
+      return _.merge({}, state, {reloadHomeData: false})
 
     default:
       return state

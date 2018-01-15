@@ -4,6 +4,7 @@ import { withStyles } from 'material-ui/styles'
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table'
 import Paper from 'material-ui/Paper'
 import map from 'lodash/map'
+import get from 'lodash/get'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
 import Button from 'material-ui/Button'
@@ -38,8 +39,8 @@ export const TournamentsTableComponent = ({tournaments, classes}) => {
           {map(tournaments, tournament => (
             <TableRow key={tournament.id}>
               <TableCell>{moment(tournament.date, 'YYYY-MM-DD').format('MMMM DD, YYYY')}</TableCell>
-              <TableCell>0</TableCell>
-              <TableCell>Me</TableCell>
+              <TableCell>{get(tournament, 'setsRemaining', 0)}</TableCell>
+              <TableCell>{get(tournament, 'firstPlace.name', 'In Progress')}</TableCell>
               <TableCell>
                 <Link to={`/tournament/${tournament.id}`} className={classes.link}>
                   <Button color='accent'>Open Bracket</Button>
