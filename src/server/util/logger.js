@@ -21,7 +21,6 @@ if (config.get('isDevelopment')) {
       _.set(obj, 'log_level', _.get(obj, 'level', ''))
       _.set(obj, 'log_level', _.toUpper(obj['level']))
       _.set(obj, 'log', _.get(obj, 'messsage', ''))
-      _.set(obj, 'app_name', config.get('appName'))
       delete obj.level
       delete obj.log
       return JSON.stringify(obj)
