@@ -11,7 +11,7 @@ import {Tournament} from './tournament'
 export class Main extends Component {
   render () {
     return (
-      <div className='main-view'>
+      <div className='main-view' style={{height: '100%'}}>
         <Header />
         <div className='content'>
           <Route exact path='/' component={Home} />

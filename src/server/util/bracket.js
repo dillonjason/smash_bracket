@@ -2,6 +2,7 @@ import _ from 'lodash'
 
 export class Bracket {
   constructor ({players}) {
+    this.numberOfSets = 0
     this.players = _.shuffle(players)
     this.winners = this._generateWinnersBracket()
     this.losers = this._generateLosersBracket()
@@ -28,6 +29,11 @@ export class Bracket {
     return numberOfByes
   }
 
+  _getSetName () {
+    this.numberOfSets++
+    return `Game ${this.numberOfSets}`
+  }
+
   _generateWinnersBracket () {
     const playersClone = _.cloneDeep(this.players)
     const numberOfByes = this._getNumberOfByes()
@@ -41,6 +47,7 @@ export class Bracket {
     const numberOfSetsInFirstRound = playersClone.length / 2
     for (let i = 0; i < numberOfSetsInFirstRound; i++) {
       const set = {
+        name: this._getSetName(),
         firstPlayer: playersClone.shift(),
         secondPlayer: playersClone.shift(),
         id: i.toString()
@@ -60,6 +67,7 @@ export class Bracket {
 
         if (!lastSetInRound || (lastSetInRound.firstPlayer && lastSetInRound.secondPlayer)) {
           const newSet = {
+            name: this._getSetName(),
             firstPlayer: set.id,
             id: `${set.id}_${round.length}`
           }
@@ -80,6 +88,7 @@ export class Bracket {
           const lastInt = Number(ids.pop()) + 1
           ids.push(lastInt)
           const newSet = {
+            name: this._getSetName(),
             firstPlayer: bye,
             id: ids.join('_')
           }
@@ -105,6 +114,7 @@ export class Bracket {
 
     for (let i = 0; i < numFirstRoundSets; i++) {
       const set = {
+        name: this._getSetName(),
         firstPlayer: winnersFirstRound.shift().id,
         secondPlayer: winnersFirstRound.shift().id,
         id: `L_${i}`
@@ -126,6 +136,7 @@ export class Bracket {
 
     if (numFirstRoundSets === 0) {
       const set = {
+        name: this._getSetName(),
         firstPlayer: byes.pop(),
         secondPLayer: byes.shift(),
         id: `L_0`
@@ -147,6 +158,7 @@ export class Bracket {
 
         if (!lastSetInRound || (lastSetInRound.firstPlayer && lastSetInRound.secondPlayer)) {
           const newSet = {
+            name: this._getSetName(),
             firstPlayer: set.id,
             id: `${set.id}_${round.length}`
           }
@@ -167,6 +179,7 @@ export class Bracket {
           const lastInt = Number(ids.pop()) + 1
           ids.push(lastInt)
           const newSet = {
+            name: this._getSetName(),
             firstPlayer: bye,
             id: ids.join('_')
           }
@@ -190,12 +203,14 @@ export class Bracket {
 
   _generateFinalsBracket () {
     const finalSet = {
+      name: this._getSetName(),
       id: 'FINAL',
       firstPlayer: _.last(_.last(this.winners)).id,
       secondPlayer: _.last(_.last(this.losers)).id
     }
 
     const optionalFinalSet = {
+      name: this._getSetName(),
       id: 'OPT_FINAL',
       firstPlayer: _.last(_.last(this.winners)).id,
       secondPlayer: _.last(_.last(this.losers)).id
@@ -257,7 +272,7 @@ export class Bracket {
         if (secondPlayerSetId) {
           _.set(set, 'secondPlayer', secondPlayerSetId)
         } else {
-          _.forEach(set.matches, match => _.set(match, 'secondPlayer', set.firstPlayer))
+          _.forEach(set.matches, match => _.set(match, 'secondPlayer', set.secondPlayer))
         }
       })
     })
@@ -269,21 +284,21 @@ export class Bracket {
 
     _.forEach(this.winners, round => {
       _.forEach(round, set => {
-        sets.push(set.id)
+        sets.push(set)
         matches = _.concat(matches, [`${set.id}_M0`, `${set.id}_M1`, `${set.id}_M2`])
       })
     })
 
     _.forEach(this.losers, round => {
       _.forEach(round, set => {
-        sets.push(set.id)
+        sets.push(set)
         matches = _.concat(matches, [`${set.id}_M0`, `${set.id}_M1`, `${set.id}_M2`])
       })
     })
 
     _.forEach(this.finals, round => {
       _.forEach(round, set => {
-        sets.push(set.id)
+        sets.push(set)
         matches = _.concat(matches, [`${set.id}_M0`, `${set.id}_M1`, `${set.id}_M2`])
       })
     })

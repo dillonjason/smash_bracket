@@ -10,7 +10,7 @@ export const createSetQuery = () => `
 
 export const createMultipleSetsQuery = ({sets}) => {
   const adds = _.map(sets, set => `
-    ALIAS_${set}: createSet(isPublished: true) {
+    ALIAS_${set.id}: createSet(isPublished: true, name: "${set.name}") {
       id
     }
   `).join(' ')
