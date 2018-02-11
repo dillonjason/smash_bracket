@@ -207,10 +207,12 @@ export class Bracket {
   _mapSets () {
     const winnerSets = _.flattenDeep(this.winners)
     const loserSets = _.flattenDeep(this.losers)
+    const finalSet = _.first(_.first(this.finals))
 
     _.forEach(this.winners, (round, roundIndex) => {
       _.forEach(round, set => {
-        const winnerGoesTo = _.find(winnerSets, nextSet => nextSet.firstPlayer === set.id || nextSet.secondPlayer === set.id)
+        const winnerGoesTo = _.find(winnerSets, nextSet => nextSet.firstPlayer === set.id || nextSet.secondPlayer === set.id) ||
+          (finalSet.firstPlayer === set.id || finalSet.secondPlayer === set.id ? finalSet : undefined)
         if (winnerGoesTo) {
           set.winnerSet = winnerGoesTo.id
         }
@@ -224,7 +226,8 @@ export class Bracket {
 
     _.forEach(this.losers, (round, roundIndex) => {
       _.forEach(round, set => {
-        const winnerGoesTo = _.find(loserSets, nextSet => nextSet.firstPlayer === set.id || nextSet.secondPlayer === set.id)
+        const winnerGoesTo = _.find(loserSets, nextSet => nextSet.firstPlayer === set.id || nextSet.secondPlayer === set.id) ||
+          (finalSet.firstPlayer === set.id || finalSet.secondPlayer === set.id ? finalSet : undefined)
         if (winnerGoesTo) {
           set.winnerSet = winnerGoesTo.id
         }
