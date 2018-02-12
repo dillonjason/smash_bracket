@@ -91,3 +91,11 @@ export const addWinnerLoserSetsToSetsQuery = ({sets}) => {
     }
   `
 }
+
+export const updateSetWinner = ({set, setWinner}) => `
+  mutation {
+    updateSet(id: "${set}", setWinnerId: "${setWinner}") {
+      id
+    }
+  }
+`

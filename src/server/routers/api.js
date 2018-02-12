@@ -30,7 +30,7 @@ apiRouter
   })
 
   .post('/updateMatches', async function (ctx) {
-    const matches = ctx.request.body
+    const {set, matches} = ctx.request.body
     const graphQl = new GraphQl(ctx.logger)
 
     if (_.find(matches, match => !match.id)) {
@@ -38,6 +38,11 @@ apiRouter
     }
 
     await graphQl.updateMatches({matches})
+
+    const winningCount = _.countBy(matches, match => match.winner)
+    const setWinner = _.find(_.keys(winningCount), winnerId => winningCount[winnerId] === 2)
+    await graphQl.updateSetWinner({set, setWinner})
+
     ctx.status = 200
   })
 

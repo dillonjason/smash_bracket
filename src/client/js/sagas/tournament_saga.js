@@ -11,6 +11,8 @@ import {clearFormField, toggleEditMatches} from '../store/tournament/actions'
 function * updateSetMatches () {
   try {
     const stateData = yield select(state => pick(state.tournament, [
+      'editSetMatchesId',
+
       'firstMatchId',
       'firstMatchFirstCharacter',
       'firstMatchSecondCharacter',
@@ -27,26 +29,29 @@ function * updateSetMatches () {
       'thirdMatchWinner'
     ]))
 
-    const data = [
-      {
-        id: stateData.firstMatchId,
-        firstCharacter: stateData.firstMatchFirstCharacter,
-        secondCharacter: stateData.firstMatchSecondCharacter,
-        winner: stateData.firstMatchWinner
-      },
-      {
-        id: stateData.secondMatchId,
-        firstCharacter: stateData.secondMatchFirstCharacter,
-        secondCharacter: stateData.secondMatchSecondCharacter,
-        winner: stateData.secondMatchWinner
-      },
-      {
-        id: stateData.thirdMatchId,
-        firstCharacter: stateData.thirdMatchFirstCharacter,
-        secondCharacter: stateData.thirdMatchSecondCharacter,
-        winner: stateData.thirdMatchWinner
-      }
-    ]
+    const data = {
+      set: stateData.editSetMatchesId,
+      matches: [
+        {
+          id: stateData.firstMatchId,
+          firstCharacter: stateData.firstMatchFirstCharacter,
+          secondCharacter: stateData.firstMatchSecondCharacter,
+          winner: stateData.firstMatchWinner
+        },
+        {
+          id: stateData.secondMatchId,
+          firstCharacter: stateData.secondMatchFirstCharacter,
+          secondCharacter: stateData.secondMatchSecondCharacter,
+          winner: stateData.secondMatchWinner
+        },
+        {
+          id: stateData.thirdMatchId,
+          firstCharacter: stateData.thirdMatchFirstCharacter,
+          secondCharacter: stateData.thirdMatchSecondCharacter,
+          winner: stateData.thirdMatchWinner
+        }
+      ]
+    }
 
     yield Api.postUpdateMatches({data})
     yield put(toggleEditMatches())
