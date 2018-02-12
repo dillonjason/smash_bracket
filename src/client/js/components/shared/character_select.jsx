@@ -25,7 +25,7 @@ const CharacterSelectComponent = ({value = '', onChange, data, id, label = 'Char
   const {loading, error, allCharacters} = data
   const renderValue = (selected) => {
     let render = null
-    if (selected) {
+    if (selected && allCharacters) {
       const character = find(allCharacters, {id: selected})
       render = (
         <div style={{display: 'flex'}}>

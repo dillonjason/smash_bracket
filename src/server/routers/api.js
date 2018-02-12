@@ -1,4 +1,5 @@
 import Router from 'koa-router'
+import _ from 'lodash'
 
 import {Bracket} from '../util/bracket'
 import {GraphQl} from './../util/graphql'
@@ -25,6 +26,18 @@ apiRouter
     const tournamentId = await graphQl.createTournament({date, players, numberOfSets: bracket.countSets()})
     await bracket.save({graphQl, tournamentId})
 
+    ctx.status = 200
+  })
+
+  .post('/updateMatches', async function (ctx) {
+    const matches = ctx.request.body
+    const graphQl = new GraphQl(ctx.logger)
+
+    if (_.find(matches, match => !match.id)) {
+      ctx.throw('Match Id not provided')
+    }
+
+    await graphQl.updateMatches({matches})
     ctx.status = 200
   })
 

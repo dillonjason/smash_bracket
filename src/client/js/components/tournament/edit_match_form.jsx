@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {graphql} from 'react-apollo'
 import gql from 'graphql-tag'
@@ -24,72 +24,106 @@ const styles = theme => ({
   }
 })
 
-const EditMatchFormComponent = ({data, classes, matchIndex, matchData, updateForFmield}) => {
-  const {loading, error, Match} = data
-  const prefixes = ['first', 'second', 'third']
-  const matchPrefix = prefixes[matchIndex]
-  const thisMatchData = matchData[matchIndex]
+class EditMatchFormComponent extends Component {
+  constructor (props) {
+    super(props)
+    this.prefixes = ['first', 'second', 'third']
+  }
 
-  const handleChange = ({event, field}) => {
-    const value = event.target.value
-    updateForFmield({
-      field: `${matchPrefix}${field}`,
-      value
+  componentDidMount () {
+    this.props.updateFormField({
+      field: `${this.prefixes[this.props.matchIndex]}MatchId`,
+      value: this.props.matchId
     })
   }
 
-  return (
-    <div className='add-tournament-form-component'>
-      {loading && <Loading />}
-      {error && 'Error'}
-      {Match &&
-        <form>
-          <CharacterSelect
-            id={`${Match.id}_player_1_character`}
-            label={`${get(Match, 'firstPlayer.name', 'Unknown')}'s Character`}
-            value={thisMatchData.matchFirstCharacter}
-            onChange={event => handleChange({event, field: 'MatchFirstCharacter'})}
-          />
+  componentDidUpdate (prevProps) {
+    if (!prevProps.data.Match && this.props.data.Match) {
+      this.props.updateFormField({
+        field: `${this.prefixes[this.props.matchIndex]}MatchFirstCharacter`,
+        value: get(this.props.data.Match, 'firstPlayerCharacter.id', '')
+      })
 
-          <CharacterSelect
-            id={`${Match.id}_player_2_character`}
-            label={`${get(Match, 'secondPlayer.name', 'Unknown')}'s Character`}
-            value={thisMatchData.matchSecondCharacter}
-            onChange={event => handleChange({event, field: 'MatchSecondCharacter'})}
-          />
+      this.props.updateFormField({
+        field: `${this.prefixes[this.props.matchIndex]}MatchSecondCharacter`,
+        value: get(this.props.data.Match, 'secondPlayerCharacter.id', '')
+      })
 
-          <FormControl className={classes.formControl}>
-            <FormLabel>Winner</FormLabel>
-            <RadioGroup
-              row
-              name={`${Match.id}_winner`}
-              value={thisMatchData.matchWinner}
-              onChange={event => handleChange({event, field: 'MatchWinner'})}
-            >
-              <FormControlLabel
-                value={`${get(Match, 'firstPlayer.id')}`}
-                control={<Radio />}
-                label={`${get(Match, 'firstPlayer.name')}`}
-              />
-              <FormControlLabel
-                value={`${get(Match, 'secondPlayer.id')}`}
-                control={<Radio />}
-                label={`${get(Match, 'secondPlayer.name')}`}
-              />
-            </RadioGroup>
-          </FormControl>
-        </form>
-      }
-    </div>
-  )
+      this.props.updateFormField({
+        field: `${this.prefixes[this.props.matchIndex]}MatchWinner`,
+        value: get(this.props.data.Match, 'winner.id', '')
+      })
+    }
+  }
+
+  render () {
+    const {data, classes, matchIndex, matchData, updateFormField} = this.props
+    const {loading, error, Match} = data
+    const matchPrefix = this.prefixes[matchIndex]
+    const thisMatchData = matchData[matchIndex]
+
+    const handleChange = ({event, field}) => {
+      const value = event.target.value
+      updateFormField({
+        field: `${matchPrefix}${field}`,
+        value
+      })
+    }
+
+    return (
+      <div className='add-tournament-form-component'>
+        {loading && <Loading />}
+        {error && 'Error'}
+        {Match &&
+          <form>
+            <CharacterSelect
+              id={`${Match.id}_player_1_character`}
+              label={`${get(Match, 'firstPlayer.name', 'Unknown')}'s Character`}
+              value={thisMatchData.matchFirstCharacter}
+              onChange={event => handleChange({event, field: 'MatchFirstCharacter'})}
+            />
+
+            <CharacterSelect
+              id={`${Match.id}_player_2_character`}
+              label={`${get(Match, 'secondPlayer.name', 'Unknown')}'s Character`}
+              value={thisMatchData.matchSecondCharacter}
+              onChange={event => handleChange({event, field: 'MatchSecondCharacter'})}
+            />
+
+            <FormControl className={classes.formControl}>
+              <FormLabel>Winner</FormLabel>
+              <RadioGroup
+                row
+                name={`${Match.id}_winner`}
+                value={thisMatchData.matchWinner}
+                onChange={event => handleChange({event, field: 'MatchWinner'})}
+              >
+                <FormControlLabel
+                  value={`${get(Match, 'firstPlayer.id')}`}
+                  control={<Radio />}
+                  label={`${get(Match, 'firstPlayer.name')}`}
+                />
+                <FormControlLabel
+                  value={`${get(Match, 'secondPlayer.id')}`}
+                  control={<Radio />}
+                  label={`${get(Match, 'secondPlayer.name')}`}
+                />
+              </RadioGroup>
+            </FormControl>
+          </form>
+        }
+      </div>
+    )
+  }
 }
 
 EditMatchFormComponent.propTypes = {
+  matchId: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   matchIndex: PropTypes.number.isRequired,
   matchData: PropTypes.array.isRequired,
-  updateForFmield: PropTypes.func.isRequired
+  updateFormField: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -113,7 +147,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  updateForFmield: bindActionCreators(updateFormField, dispatch)
+  updateFormField: bindActionCreators(updateFormField, dispatch)
 })
 
 const query = gql`
@@ -126,28 +160,16 @@ const query = gql`
       firstPlayer {
         id
         name
-        characters {
-          id
-        }
       }
       firstPlayerCharacter {
         id
-        icon {
-          url
-        }
       }
       secondPlayer {
         id
         name
-        characters {
-          id
-        }
       }
       secondPlayerCharacter {
         id
-        icon {
-          url
-        }
       }
     }
   }

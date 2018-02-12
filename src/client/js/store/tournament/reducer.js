@@ -7,16 +7,19 @@ const initialState = {
   editSetMatchesName: '',
 
   // First Match
+  firstMatchId: '',
   firstMatchFirstCharacter: '',
   firstMatchSecondCharacter: '',
   firstMatchWinner: '',
 
   // Second Match
+  secondMatchId: '',
   secondMatchFirstCharacter: '',
   secondMatchSecondCharacter: '',
   secondMatchWinner: '',
 
   // Third Match
+  thirdMatchId: '',
   thirdMatchFirstCharacter: '',
   thirdMatchSecondCharacter: '',
   thirdMatchWinner: ''
@@ -35,13 +38,18 @@ function reducer (state = initialState, action) {
 
     case ACTIONS.CLEAR_MATCH_EDIT_FORM_FIELD:
       return _.merge({}, state, {
-        firstMatchfirstCharacter: '',
+        firstMatchId: '',
+        firstMatchFirstCharacter: '',
         firstMatchSecondCharacter: '',
         firstMatchWinner: '',
-        secondMatchfirstCharacter: '',
+
+        secondMatchId: '',
+        secondMatchFirstCharacter: '',
         secondMatchSecondCharacter: '',
         secondMatchWinner: '',
-        thirdMatchfirstCharacter: '',
+
+        thirdMatchId: '',
+        thirdMatchFirstCharacter: '',
         thirdMatchSecondCharacter: '',
         thirdMatchWinner: ''
       })

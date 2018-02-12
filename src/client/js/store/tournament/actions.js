@@ -24,6 +24,6 @@ export function clearFormField () {
 
 export function submitEditMatches () {
   return {
-    type: ACTIONS.SUBMIT_EDIT_MATCHES
+    type: ACTIONS.SUBMIT_UPDATE_MATCHES
   }
 }
