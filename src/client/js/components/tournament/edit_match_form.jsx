@@ -38,21 +38,30 @@ class EditMatchFormComponent extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    if (!prevProps.data.Match && this.props.data.Match) {
-      this.props.updateFormField({
-        field: `${this.prefixes[this.props.matchIndex]}MatchFirstCharacter`,
-        value: get(this.props.data.Match, 'firstPlayerCharacter.id', '')
-      })
+    if (this.props.data.Match) {
+      const thisMatchData = this.props.matchData[this.props.matchIndex]
+      const dbMatchData = this.props.data.Match
 
-      this.props.updateFormField({
-        field: `${this.prefixes[this.props.matchIndex]}MatchSecondCharacter`,
-        value: get(this.props.data.Match, 'secondPlayerCharacter.id', '')
-      })
+      if (!thisMatchData.matchFirstCharacter && get(dbMatchData, 'firstPlayerCharacter.id', '')) {
+        this.props.updateFormField({
+          field: `${this.prefixes[this.props.matchIndex]}MatchFirstCharacter`,
+          value: get(dbMatchData, 'firstPlayerCharacter.id', '')
+        })
+      }
 
-      this.props.updateFormField({
-        field: `${this.prefixes[this.props.matchIndex]}MatchWinner`,
-        value: get(this.props.data.Match, 'winner.id', '')
-      })
+      if (!thisMatchData.matchSecondCharacter && get(dbMatchData, 'secondPlayerCharacter.id', '')) {
+        this.props.updateFormField({
+          field: `${this.prefixes[this.props.matchIndex]}MatchSecondCharacter`,
+          value: get(dbMatchData, 'secondPlayerCharacter.id', '')
+        })
+      }
+
+      if (!thisMatchData.matchWinner && get(dbMatchData, 'winner.id', '')) {
+        this.props.updateFormField({
+          field: `${this.prefixes[this.props.matchIndex]}MatchWinner`,
+          value: get(dbMatchData, 'winner.id', '')
+        })
+      }
     }
   }
 
