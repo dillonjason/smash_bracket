@@ -6,14 +6,18 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
 import flow from 'lodash/flow'
+import map from 'lodash/map'
 
 import {toggleEditMatches, clearFormField, submitEditMatches} from './../../store/tournament/actions'
 
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog'
 import Button from 'material-ui/Button'
 import Slide from 'material-ui/transitions/Slide'
+import Typography from 'material-ui/Typography'
+import Divider from 'material-ui/Divider'
 
 import {Loading} from '../shared/loading'
+import {EditMatchForm} from './edit_match_form'
 
 const Transition = (props) => (
   <Slide direction='up' {...props} />
@@ -45,11 +49,15 @@ const EditMatchesDialogComponent = ({editMatchesOpen, editSetMatchesName, toggle
         </DialogContentText>
         {loading && <Loading />}
         {error && 'Error'}
-        {Set &&
-          <div>
-            {Set.id}
-          </div>
-        }
+        {Set && map(Set.matches, (match, index) => (
+          [
+            <Typography type='subheading'>
+              Match {index + 1}
+            </Typography>,
+            <EditMatchForm key={match.id} matchId={match.id} matchIndex={index} />,
+            <Divider />
+          ]
+        ))}
       </DialogContent>
       <DialogActions>
         <Button onClick={clearAndClose} color='primary'>
@@ -88,6 +96,9 @@ const query = gql`
   query EditMatchesDialog($editSetMatchesId: ID) {
     Set(id: $editSetMatchesId) {
       id
+      matches {
+        id
+      }
     }
   }
 `
