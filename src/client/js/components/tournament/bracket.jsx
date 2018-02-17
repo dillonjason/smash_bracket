@@ -19,11 +19,23 @@ import {toggleEditMatches} from './../../store/tournament/actions'
 
 import {Loading} from '../shared/loading'
 
-const setPlayerNames = ({attributes, set, prefix}) => {
+const setPlayerNames = ({attributes, set, isFromWinner}) => {
+  const prefix = isFromWinner ? 'Winner Of' : 'Loser Of'
+  let playerName = `${prefix} ${get(set, 'name')}`
+  const winnerId = get(set, 'setWinner.id')
+
+  if (winnerId) {
+    if (isFromWinner) {
+      playerName = get(set, 'setWinner.name')
+    } else {
+      playerName = winnerId === get(set, 'firstPlayer.id') ? get(set, 'secondPlayer.name') : get(set, 'firstPlayer.name')
+    }
+  }
+
   if (attributes.firstPlayer) {
-    attributes.secondPlayer = `${prefix} ${get(set, 'name')}`
+    attributes.secondPlayer = playerName
   } else {
-    attributes.firstPlayer = `${prefix} ${get(set, 'name')}`
+    attributes.firstPlayer = playerName
   }
 }
 
@@ -52,22 +64,22 @@ const generateTournamentTree = ({Tournament, set, endBranch}) => {
 
     forEach(setData.winnerFromSets, fromSet => {
       const fromSetData = find(Tournament.sets, tournamentSet => tournamentSet.id === fromSet.id)
-      setPlayerNames({attributes, set: fromSetData, prefix: 'Winner of'})
+      setPlayerNames({attributes, set: fromSetData, isFromWinner: true})
       
       children.push({
         name: get(fromSetData, 'name'),
-        ...generateTournamentTree({Tournament, set: fromSet})
+        ...generateTournamentTree({Tournament, set: fromSetData})
       })
     })
 
     forEach(setData.loserFromSets, fromSet => {
       const fromSetData = find(Tournament.sets, tournamentSet => tournamentSet.id === fromSet.id)
-      setPlayerNames({attributes, set: fromSetData, prefix: 'Loser of'})
+      setPlayerNames({attributes, set: fromSetData, isFromWinner: false})
       
       if (!setLosersStart) {
         children.push({
           name: get(fromSetData, 'name'),
-          ...generateTournamentTree({Tournament, set: fromSet, endBranch: setHasBye})
+          ...generateTournamentTree({Tournament, set: fromSetData, endBranch: setHasBye})
         })
       }
     })
@@ -137,6 +149,10 @@ const query = gql`
       sets {
         id
         name
+        setWinner {
+          id
+          name
+        }
         winnerSet {
           id
         }
@@ -151,9 +167,11 @@ const query = gql`
         }
         matches {
           firstPlayer {
+            id
             name
           }
           secondPlayer {
+            id
             name
           }
         }
