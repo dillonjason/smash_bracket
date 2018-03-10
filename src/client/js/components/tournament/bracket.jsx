@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
 import get from 'lodash/get'
+import has from 'lodash/has'
 import forEach from 'lodash/forEach'
 import find from 'lodash/find'
 import filter from 'lodash/filter'
@@ -22,9 +23,11 @@ import {Loading} from '../shared/loading'
 const setPlayerNames = ({attributes, set, isFromWinner}) => {
   const prefix = isFromWinner ? 'Winner Of' : 'Loser Of'
   let playerName = `${prefix} ${get(set, 'name')}`
+  let playerReady = false
   const winnerId = get(set, 'setWinner.id')
 
   if (winnerId) {
+    playerReady = true
     if (isFromWinner) {
       playerName = get(set, 'setWinner.name')
     } else {
@@ -34,8 +37,10 @@ const setPlayerNames = ({attributes, set, isFromWinner}) => {
 
   if (attributes.firstPlayer) {
     attributes.secondPlayer = playerName
+    attributes.secondPlayerReady = playerReady
   } else {
     attributes.firstPlayer = playerName
+    attributes.firstPlayerReady = playerReady
   }
 }
 
@@ -47,13 +52,19 @@ const generateTournamentTree = ({Tournament, set, endBranch}) => {
   if ((isEmpty(setData.winnerFromSets) && isEmpty(setData.loserFromSets)) || endBranch) {
     return endBranch
       ? {
-        attributes: {...getSetAttributes({set: setData})}
+        attributes: {
+          ...getSetAttributes({set: setData}),
+          firstPlayerReady: Boolean(get(setData, 'matches.0.firstPlayer.name')),
+          secondPlayerReady: Boolean(get(setData, 'matches.0.firstPlayer.name'))
+        }
       }
       : {
         attributes: {
           ...getSetAttributes({set: setData}),
-          playerOne: get(setData, 'matches.0.firstPlayer.name'),
-          playerTwo: get(setData, 'matches.0.secondPlayer.name')
+          firstPlayer: get(setData, 'matches.0.firstPlayer.name'),
+          firstPlayerReady: Boolean(get(setData, 'matches.0.firstPlayer.name')),
+          secondPlayer: get(setData, 'matches.0.secondPlayer.name'),
+          secondPlayerReady: Boolean(get(setData, 'matches.0.secondPlayer.name'))
         }
       }
   } else {
@@ -90,10 +101,12 @@ const generateTournamentTree = ({Tournament, set, endBranch}) => {
 }
 
 const onSetClick = ({attributes, toggleEditMatches}) => {
-  toggleEditMatches({
-    id: attributes.id,
-    name: attributes.name
-  })
+  if (attributes.firstPlayerReady && attributes.secondPlayerReady) {
+    toggleEditMatches({
+      id: attributes.id,
+      name: attributes.name
+    })
+  }
 }
 
 export const BracketComponent = ({data, toggleEditMatches}) => {
