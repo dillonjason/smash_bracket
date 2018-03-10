@@ -174,7 +174,7 @@ export class BracketComponent extends Component {
             }}
             zoom={0.6}
             translate={this.state.translate}
-            onClick={({ attributes }) => this.onSetClick({ attributes, toggleEditMatches })}
+            onClick={({ attributes }) => this.onSetClick({ attributes, toggleEditMatches: this.props.toggleEditMatches })}
           />
         }
       </div>
