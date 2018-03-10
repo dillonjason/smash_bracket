@@ -40,7 +40,7 @@ export const PlayerRowComponent = ({player, classes}) => {
       <TableCell>{player._tournamentsMeta.count}</TableCell>
       <TableCell>
         <Link to={`/players/${player.id}`} className={classes.link}>
-          <Button color='accent'>Edit</Button>
+          <Button color='accent'>Details</Button>
         </Link>
       </TableCell>
     </TableRow>
