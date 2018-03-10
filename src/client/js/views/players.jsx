@@ -5,7 +5,7 @@ import {AddFab} from '../components/players/add_fab'
 import {Players} from '../components/players/players'
 
 export const PlayersView = () => (
-  <div className='players-view'>
+  <div className='players-view' style={{display: 'flex', flex: '1'}}>
     <Grid container>
       <Grid item xs={12}>
         <Players />
