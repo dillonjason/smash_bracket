@@ -39,3 +39,12 @@ export const addSetsToTournamentQuery = ({tournamentId, sets}) => {
     }
   `
 }
+
+export const deleteTournamentQuery = ({id}) => {
+  return `
+  mutation {
+    deleteTournament(id: "${id}") {
+      id
+    }
+  }`
+}

@@ -11,4 +11,8 @@ export class Api {
   static async postUpdateMatches ({data}) {
     return request.post({uri: `${prefix}/updateMatches`, data})
   }
+
+  static async deleteTournament ({id}) {
+    return request.post({uri: `${prefix}/deleteTournament`, data: {id}})
+  }
 }

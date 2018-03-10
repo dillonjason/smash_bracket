@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import { withStyles } from 'material-ui/styles'
@@ -25,53 +25,63 @@ const styles = theme => ({
   }
 })
 
-export const TournamentsTableComponent = ({tournaments, classes, date, players, deleteTournamentId}) => {
-  const showOptimistic = moment(date).isValid() && players.length > 0
-  return (
-    <Paper className={classes.container}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Sets Remaining</TableCell>
-            <TableCell>Winner</TableCell>
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {showOptimistic &&
-            <TableRow key='optimistic'>
-              <TableCell>{moment(date, 'YYYY-MM-DD').format('MMMM DD, YYYY')}</TableCell>
-              <TableCell>{(2 * players.length) - 1}</TableCell>
-              <TableCell>In Progress</TableCell>
-              <TableCell>
-                <Button color='secondary' disabled>Open Bracket</Button>
-              </TableCell>
-            </TableRow>
-          }
-          {map(tournaments, tournament => {
-            const ignore = tournament.id === deleteTournamentId
+export class TournamentsTableComponent extends Component {
+  componentWillUpdate (nextProps) {
+    if (!nextProps.deleteTournamentId && this.props.deleteTournamentId) {
+      this.props.refetch()
+    }
+  }
 
-            return ignore ? null : (
-              <TableRow key={tournament.id}>
-                <TableCell>{moment(tournament.date, 'YYYY-MM-DD').format('MMMM DD, YYYY')}</TableCell>
-                <TableCell>{get(tournament, 'setsRemaining', 0)}</TableCell>
-                <TableCell>{get(tournament, 'firstPlace.name', 'In Progress')}</TableCell>
+  render () {
+    const {tournaments, classes, date, players, deleteTournamentId} = this.props
+    const showOptimistic = moment(date).isValid() && players.length > 0
+    return (
+      <Paper className={classes.container}>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Date</TableCell>
+              <TableCell>Sets Remaining</TableCell>
+              <TableCell>Winner</TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {showOptimistic &&
+              <TableRow key='optimistic'>
+                <TableCell>{moment(date, 'YYYY-MM-DD').format('MMMM DD, YYYY')}</TableCell>
+                <TableCell>{(2 * players.length) - 1}</TableCell>
+                <TableCell>In Progress</TableCell>
                 <TableCell>
-                  <Link to={`/tournament/${tournament.id}`} className={classes.link}>
-                    <Button color='secondary'>Open Bracket</Button>
-                  </Link>
+                  <Button color='secondary' disabled>Open Bracket</Button>
                 </TableCell>
               </TableRow>
-            )
-          })}
-        </TableBody>
-      </Table>
-    </Paper>
-  )
+            }
+            {map(tournaments, tournament => {
+              const ignore = tournament.id === deleteTournamentId
+
+              return ignore ? null : (
+                <TableRow key={tournament.id}>
+                  <TableCell>{moment(tournament.date, 'YYYY-MM-DD').format('MMMM DD, YYYY')}</TableCell>
+                  <TableCell>{get(tournament, 'setsRemaining', 0)}</TableCell>
+                  <TableCell>{get(tournament, 'firstPlace.name', 'In Progress')}</TableCell>
+                  <TableCell>
+                    <Link to={`/tournament/${tournament.id}`} className={classes.link}>
+                      <Button color='secondary'>Open Bracket</Button>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
+      </Paper>
+    )
+  }
 }
 
 TournamentsTableComponent.propTypes = {
+  refetch: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   tournaments: PropTypes.array.isRequired,
   date: PropTypes.oneOfType([

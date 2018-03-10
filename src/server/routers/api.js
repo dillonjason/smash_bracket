@@ -46,4 +46,12 @@ apiRouter
     ctx.status = 200
   })
 
+  .post('/deleteTournament', async function (ctx) {
+    const {id} = ctx.request.body
+    const graphQl = new GraphQl(ctx.logger)
+    await graphQl.deleteTournament({id})
+
+    ctx.status = 200
+  })
+
 export default apiRouter

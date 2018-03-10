@@ -17,7 +17,7 @@ export class TournamentsComponent extends Component {
       <div className='tournaments-component'>
         {loading && <Loading />}
         {error && 'Error'}
-        {allTournaments && <TournamentsTable tournaments={allTournaments} />}
+        {allTournaments && <TournamentsTable tournaments={allTournaments} refetch={refetch} />}
         <AddTournamentDialog refetch={refetch} />
       </div>
     )

@@ -64,8 +64,8 @@ function * updateSetMatches () {
 function * deleteTournament () {
   try {
     const id = yield select(state => state.tournament.deleteTournamentId)
+    yield Api.deleteTournament({id})
     yield put(toggleDeleteTournament())
-    // yield Api.deleteTournament({id})
   } catch (error) {
     yield put(toggleDeleteTournament())
     console.error('Post Failed', error)

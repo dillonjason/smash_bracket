@@ -1,5 +1,5 @@
 import {Request} from './request'
-import {createTournamentQuery, addPlayersToTournamentQuery, addSetsToTournamentQuery} from '../queries/tournament'
+import {createTournamentQuery, addPlayersToTournamentQuery, addSetsToTournamentQuery, deleteTournamentQuery} from '../queries/tournament'
 import {createMultipleMatchesQuery, addPlayersToMatchesQuery, updateMultipleMatchesQuery} from '../queries/match'
 import {createMultipleSetsQuery, addMatchesToSetsQuery, addWinnerLoserSetsToSetsQuery, updateSetWinner} from '../queries/set'
 
@@ -14,7 +14,7 @@ export class GraphQl {
     this.uri = 'https://api.graphcms.com/simple/v1/cjcdvzcre0ten0153t5t60tsg'
   }
 
-  _getPostDate (query) {
+  _getPostData (query) {
     return {
       uri: this.uri,
       data: {
@@ -24,55 +24,59 @@ export class GraphQl {
   }
 
   async createTournament ({date, players, numberOfSets}) {
-    const response = await this.request.post(this._getPostDate(createTournamentQuery({date, numberOfSets})))
+    const response = await this.request.post(this._getPostData(createTournamentQuery({date, numberOfSets})))
     const data = await response.json()
     const tournamentId = data.data.createTournament.id
 
-    await this.request.post(this._getPostDate(addPlayersToTournamentQuery({tournamentId, players})))
+    await this.request.post(this._getPostData(addPlayersToTournamentQuery({tournamentId, players})))
     return tournamentId
   }
 
   async createMatches ({matches}) {
-    const response = await this.request.post(this._getPostDate(createMultipleMatchesQuery({matches})))
+    const response = await this.request.post(this._getPostData(createMultipleMatchesQuery({matches})))
     const data = await response.json()
     return data.data
   }
 
   async updateMatches ({matches}) {
-    await this.request.post(this._getPostDate(updateMultipleMatchesQuery({matches})))
+    await this.request.post(this._getPostData(updateMultipleMatchesQuery({matches})))
   }
 
   async createSets ({sets}) {
-    const response = await this.request.post(this._getPostDate(createMultipleSetsQuery({sets})))
+    const response = await this.request.post(this._getPostData(createMultipleSetsQuery({sets})))
     const data = await response.json()
     return data.data
   }
 
   async connectSetsToSets ({sets}) {
-    const response = await this.request.post(this._getPostDate(addWinnerLoserSetsToSetsQuery({sets})))
+    const response = await this.request.post(this._getPostData(addWinnerLoserSetsToSetsQuery({sets})))
     const data = await response.json()
     return data.data
   }
 
   async connectMatchesToSets ({sets}) {
-    const response = await this.request.post(this._getPostDate(addMatchesToSetsQuery({sets})))
+    const response = await this.request.post(this._getPostData(addMatchesToSetsQuery({sets})))
     const data = await response.json()
     return data.data
   }
 
   async connectPlayersToMatches ({sets}) {
-    const response = await this.request.post(this._getPostDate(addPlayersToMatchesQuery({sets})))
+    const response = await this.request.post(this._getPostData(addPlayersToMatchesQuery({sets})))
     const data = await response.json()
     return data.data
   }
 
   async connectSetsToTournament ({sets, tournamentId}) {
-    const response = await this.request.post(this._getPostDate(addSetsToTournamentQuery({sets, tournamentId})))
+    const response = await this.request.post(this._getPostData(addSetsToTournamentQuery({sets, tournamentId})))
     const data = await response.json()
     return data.data
   }
 
   async updateSetWinner ({set, setWinner}) {
-    await this.request.post(this._getPostDate(updateSetWinner({set, setWinner})))
+    await this.request.post(this._getPostData(updateSetWinner({set, setWinner})))
+  }
+
+  async deleteTournament ({id}) {
+    await this.request.post(this._getPostData(deleteTournamentQuery({id})))
   }
 }
