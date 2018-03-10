@@ -1,5 +1,4 @@
 {
   "isDevelopment": true,
-  "shouldHotReload": true,
-  "port": 3000
+  "shouldHotReload": true
 }

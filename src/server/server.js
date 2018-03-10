@@ -20,6 +20,8 @@ import statusRouter from './routers/status'
 import apiRouter from './routers/api'
 import viewRouter from './routers/view'
 
+const port = process.env.PORT || 3000
+
 let app = new Koa()
 
 require('epimetheus/lib/event-loop').instrument()
@@ -55,6 +57,6 @@ app
   .use(apiRouter.routes())
   .use(viewRouter.routes())
 
-app.listen(config.get('port'))
+app.listen(port)
 
-Logger.info(`Server listening at http://localhost:${config.get('port')}`)
+Logger.info(`Server listening at http://localhost:${port}`)
