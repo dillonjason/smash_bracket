@@ -70,7 +70,10 @@ export const TournamentsTableComponent = ({tournaments, classes, date, players})
 TournamentsTableComponent.propTypes = {
   classes: PropTypes.object.isRequired,
   tournaments: PropTypes.array.isRequired,
-  date: PropTypes.object,
+  date: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.string
+  ]),
   players: PropTypes.array
 }
 
