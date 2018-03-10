@@ -6,7 +6,6 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
 import get from 'lodash/get'
-import has from 'lodash/has'
 import forEach from 'lodash/forEach'
 import find from 'lodash/find'
 import filter from 'lodash/filter'
@@ -15,6 +14,8 @@ import flow from 'lodash/flow'
 import pick from 'lodash/pick'
 
 import Tree from 'react-d3-tree'
+
+import {Node} from './node'
 
 import {toggleEditMatches} from './../../store/tournament/actions'
 
@@ -134,13 +135,23 @@ export const BracketComponent = ({data, toggleEditMatches}) => {
             collapsible={false}
             pathFunc={'elbow'}
             nodeSvgShape={{
-              shape: 'rect',
-              shapeProps: {
-                width: 20,
-                height: 20,
-                x: -10,
-                y: -10
+              shape: 'none'
+            }}
+            nodeSize={{
+              x: 200,
+              y: 150
+            }}
+            allowForeignObjects
+            nodeLabelComponent={{
+              render: <Node />,
+              foreignObjectWrapper: {
+                x: -88,
+                y: -63
               }
+            }}
+            separation={{
+              siblings: 2,
+              nonSiblings: 3
             }}
             onClick={({attributes}) => onSetClick({attributes, toggleEditMatches})}
           />
