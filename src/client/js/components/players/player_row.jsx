@@ -29,7 +29,7 @@ const generateSetData = ({player}) => {
 
 export const PlayerRowComponent = ({player, classes}) => {
   return (
-    <TableRow key={player.id}>
+    <TableRow>
       <TableCell>{player.name}</TableCell>
       <TableCell>{map(player.characters, character => character.name).join(', ')}</TableCell>
       <TableCell>{generateMatchData({player})}</TableCell>

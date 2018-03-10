@@ -36,7 +36,7 @@ export const PlayersTableComponent = ({players, classes}) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {map(players, player => <PlayerRow player={player} />)}
+          {map(players, player => <PlayerRow player={player} key={player.id} />)}
         </TableBody>
       </Table>
     </Paper>

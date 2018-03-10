@@ -43,7 +43,7 @@ export const TournamentsTableComponent = ({tournaments, classes}) => {
               <TableCell>{get(tournament, 'firstPlace.name', 'In Progress')}</TableCell>
               <TableCell>
                 <Link to={`/tournament/${tournament.id}`} className={classes.link}>
-                  <Button color='accent'>Open Bracket</Button>
+                  <Button color='secondary'>Open Bracket</Button>
                 </Link>
               </TableCell>
             </TableRow>

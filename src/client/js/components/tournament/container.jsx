@@ -21,7 +21,7 @@ export const ContainerComponent = ({data, editSetMatchesId}) => {
       {loading && <Loading />}
       {error && 'Error'}
       {Tournament && [
-        <Typography type='display1' key='title'>
+        <Typography variant='display1' key='title'>
           {moment(Tournament.date, 'YYYY-MM-DD').format('MMMM DD, YYYY')} Tournament
         </Typography>,
         <Bracket tournamentId={Tournament.id} key='bracket' />,

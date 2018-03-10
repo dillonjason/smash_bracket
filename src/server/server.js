@@ -28,23 +28,25 @@ require('epimetheus/lib/event-loop').instrument()
 require('epimetheus/lib/memory-usage').instrument()
 require('./util/epimetheus').instrument(app, require('epimetheus/lib/defaults')())
 
-// Serve hot-reloading bundle to client
-if (config.get('shouldHotReload')) {
-  attachDevMiddleware(app)
-}
-
 app
   .use(metricsMiddleware)
   .use(bodyParser())
   .use(json())
-  .use(mount('/assets', serve(`${process.cwd()}/dist/assets`, {
-    cacheControl: `max-age=${365 * 24 * 60 * 60}, immutable`
-  })))
   .use(views(`${process.cwd()}/dist/assets/public/`, {
     map: {
       html: 'handlebars'
     }
   }))
+
+// Serve hot-reloading bundle to client
+if (config.get('shouldHotReload')) {
+  attachDevMiddleware(app)
+} else {
+  app
+    .use(mount('/assets', serve(`${process.cwd()}/dist/assets`, {
+      cacheControl: `max-age=${365 * 24 * 60 * 60}, immutable`
+    })))
+}
 
 app
   .use(headersMiddleware)
