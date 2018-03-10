@@ -37,7 +37,7 @@ app
   .use(metricsMiddleware)
   .use(bodyParser())
   .use(json())
-  .use(mount('/plan', serve(`${process.cwd()}/dist`, {
+  .use(mount('/assets', serve(`${process.cwd()}/dist/assets`, {
     cacheControl: `max-age=${365 * 24 * 60 * 60}, immutable`
   })))
   .use(views(`${process.cwd()}/dist/assets/public/`, {
