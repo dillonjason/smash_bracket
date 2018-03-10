@@ -57,4 +57,4 @@ app
 
 app.listen(config.get('port'))
 
-Logger.info(`Server listening at http://localhost:3000`)
+Logger.info(`Server listening at http://localhost:${config.get('port')}`)
