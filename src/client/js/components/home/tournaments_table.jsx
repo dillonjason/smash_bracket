@@ -25,7 +25,7 @@ const styles = theme => ({
   }
 })
 
-export const TournamentsTableComponent = ({tournaments, classes, date, players}) => {
+export const TournamentsTableComponent = ({tournaments, classes, date, players, deleteTournamentId}) => {
   const showOptimistic = moment(date).isValid() && players.length > 0
   return (
     <Paper className={classes.container}>
@@ -49,18 +49,22 @@ export const TournamentsTableComponent = ({tournaments, classes, date, players})
               </TableCell>
             </TableRow>
           }
-          {map(tournaments, tournament => (
-            <TableRow key={tournament.id}>
-              <TableCell>{moment(tournament.date, 'YYYY-MM-DD').format('MMMM DD, YYYY')}</TableCell>
-              <TableCell>{get(tournament, 'setsRemaining', 0)}</TableCell>
-              <TableCell>{get(tournament, 'firstPlace.name', 'In Progress')}</TableCell>
-              <TableCell>
-                <Link to={`/tournament/${tournament.id}`} className={classes.link}>
-                  <Button color='secondary'>Open Bracket</Button>
-                </Link>
-              </TableCell>
-            </TableRow>
-          ))}
+          {map(tournaments, tournament => {
+            const ignore = tournament.id === deleteTournamentId
+
+            return ignore ? null : (
+              <TableRow key={tournament.id}>
+                <TableCell>{moment(tournament.date, 'YYYY-MM-DD').format('MMMM DD, YYYY')}</TableCell>
+                <TableCell>{get(tournament, 'setsRemaining', 0)}</TableCell>
+                <TableCell>{get(tournament, 'firstPlace.name', 'In Progress')}</TableCell>
+                <TableCell>
+                  <Link to={`/tournament/${tournament.id}`} className={classes.link}>
+                    <Button color='secondary'>Open Bracket</Button>
+                  </Link>
+                </TableCell>
+              </TableRow>
+            )
+          })}
         </TableBody>
       </Table>
     </Paper>
@@ -74,12 +78,14 @@ TournamentsTableComponent.propTypes = {
     PropTypes.object,
     PropTypes.string
   ]),
-  players: PropTypes.array
+  players: PropTypes.array,
+  deleteTournamentId: PropTypes.string.isRequired
 }
 
 const mapStateToProps = (state) => ({
   date: state.home.date,
-  players: state.home.players
+  players: state.home.players,
+  deleteTournamentId: state.tournament.deleteTournamentId
 })
 
 const redux = connect(mapStateToProps)

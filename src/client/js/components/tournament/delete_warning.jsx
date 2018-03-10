@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+import {Link} from 'react-router-dom'
 
 import flow from 'lodash/flow'
 
@@ -37,9 +38,11 @@ export const DeleteWarningComponent = ({tournamentName, deleteTournamentOpen, su
         <Button onClick={toggleDeleteTournament} color='primary'>
           Cancel
         </Button>
-        <Button onClick={submitDeleteTournament} color='primary'>
-          Delete
-        </Button>
+        <Link to='/' style={{textDecoration: 'none'}}>
+          <Button onClick={submitDeleteTournament} color='primary'>
+            Delete
+          </Button>
+        </Link>
       </DialogActions>
     </Dialog>
   )

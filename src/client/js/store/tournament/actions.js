@@ -8,7 +8,7 @@ export function toggleEditMatches ({id, name} = {}) {
   }
 }
 
-export function toggleDeleteTournament ({id, name} = {}) {
+export function toggleDeleteTournament ({id} = {}) {
   return {
     type: ACTIONS.TOGGLE_DELETE_TOURNAMENT,
     id: id || ''
@@ -35,8 +35,9 @@ export function submitEditMatches () {
   }
 }
 
-export function submitDeleteTournament () {
+export function submitDeleteTournament (history) {
   return {
-    type: ACTIONS.SUBMIT_DELETE_TOURNAMENT
+    type: ACTIONS.SUBMIT_DELETE_TOURNAMENT,
+    history
   }
 }

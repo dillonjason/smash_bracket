@@ -67,16 +67,16 @@ const AddTournamentFormComponent = ({classes, data, date, players, updateFormFie
 AddTournamentFormComponent.propTypes = {
   classes: PropTypes.object.isRequired,
   data: PropTypes.object.isRequired,
-  date: PropTypes.object,
+  date: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.string
+  ]),
   players: PropTypes.array,
   updateFormField: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
-  date: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.string
-  ]),
+  date: state.home.date,
   players: state.home.players
 })
 

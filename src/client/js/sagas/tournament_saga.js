@@ -6,7 +6,7 @@ import {Api} from '../util/api'
 
 // Store Imports
 import { ACTIONS } from '../store/tournament/action_types'
-import {clearFormField, toggleEditMatches} from '../store/tournament/actions'
+import {clearFormField, toggleEditMatches, toggleDeleteTournament} from '../store/tournament/actions'
 
 function * updateSetMatches () {
   try {
@@ -61,6 +61,18 @@ function * updateSetMatches () {
   }
 }
 
+function * deleteTournament () {
+  try {
+    const id = yield select(state => state.tournament.deleteTournamentId)
+    yield put(toggleDeleteTournament())
+    // yield Api.deleteTournament({id})
+  } catch (error) {
+    yield put(toggleDeleteTournament())
+    console.error('Post Failed', error)
+  }
+}
+
 export function * tournamentSaga () {
   yield takeEvery(ACTIONS.SUBMIT_UPDATE_MATCHES, updateSetMatches)
+  yield takeEvery(ACTIONS.SUBMIT_DELETE_TOURNAMENT, deleteTournament)
 }
