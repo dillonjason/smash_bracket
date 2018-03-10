@@ -1,5 +1,5 @@
 import {Request} from './request'
-import {createTournamentQuery, addPlayersToTournamentQuery, addSetsToTournamentQuery, deleteTournamentQuery} from '../queries/tournament'
+import {createTournamentQuery, addPlayersToTournamentQuery, addSetsToTournamentQuery, deleteTournamentQuery, getTournamentSetsQuery} from '../queries/tournament'
 import {createMultipleMatchesQuery, addPlayersToMatchesQuery, updateMultipleMatchesQuery} from '../queries/match'
 import {createMultipleSetsQuery, addMatchesToSetsQuery, addWinnerLoserSetsToSetsQuery, updateSetWinner} from '../queries/set'
 
@@ -76,7 +76,14 @@ export class GraphQl {
     await this.request.post(this._getPostData(updateSetWinner({set, setWinner})))
   }
 
-  async deleteTournament ({id}) {
-    await this.request.post(this._getPostData(deleteTournamentQuery({id})))
+  async getTournamentSets ({id}) {
+    const response = await this.request.post(this._getPostData(getTournamentSetsQuery({id})))
+    const data = await response.json()
+
+    return data.data.Tournament.sets
+  }
+
+  async deleteTournament ({id, sets, matches}) {
+    await this.request.post(this._getPostData(deleteTournamentQuery({id, sets, matches})))
   }
 }

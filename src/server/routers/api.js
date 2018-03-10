@@ -49,8 +49,17 @@ apiRouter
   .post('/deleteTournament', async function (ctx) {
     const {id} = ctx.request.body
     const graphQl = new GraphQl(ctx.logger)
-    await graphQl.deleteTournament({id})
+    const sets = await graphQl.getTournamentSets({id})
+    const matches = []
 
+    _.forEach(sets, set => {
+      _.forEach(set.matches, match => {
+        matches.push(match)
+      })
+    })
+
+    await graphQl.deleteTournament({id, sets, matches})
+    
     ctx.status = 200
   })
 
