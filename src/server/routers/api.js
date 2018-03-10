@@ -39,8 +39,10 @@ apiRouter
 
     await graphQl.updateMatches({matches})
 
+    let winsNeeded = Math.floor(matches.length / 2) + 1
+
     const winningCount = _.countBy(matches, match => match.winner)
-    const setWinner = _.find(_.keys(winningCount), winnerId => winningCount[winnerId] === 2)
+    const setWinner = _.find(_.keys(winningCount), winnerId => winningCount[winnerId] >= winsNeeded)
     await graphQl.updateSetWinner({set, setWinner})
 
     ctx.status = 200
@@ -59,7 +61,7 @@ apiRouter
     })
 
     await graphQl.deleteTournament({id, sets, matches})
-    
+
     ctx.status = 200
   })
 
