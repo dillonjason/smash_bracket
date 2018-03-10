@@ -4,9 +4,12 @@ import { ACTIONS } from './action_types'
 const initialState = {
   reloadHomeData: false,
   addTournamentOpen: false,
+  disableAddTournament: false,
 
   date: new Date(),
-  players: []
+  players: [],
+
+  optimistic: {}
 }
 
 function reducer (state = initialState, action) {
@@ -29,11 +32,8 @@ function reducer (state = initialState, action) {
 
       return newState
 
-    case ACTIONS.RELOAD_HOME_DATA:
-      return _.merge({}, state, {reloadHomeData: true})
-
-    case ACTIONS.HOME_DATA_RELOADED:
-      return _.merge({}, state, {reloadHomeData: false})
+    case ACTIONS.DISABLE_ADD_TOURNAMENT:
+      return _.merge({}, state, {disableAddTournament: action.disabled})
 
     default:
       return state

@@ -6,15 +6,17 @@ import {Api} from '../util/api'
 
 // Store Imports
 import { ACTIONS } from '../store/home/action_types'
-import {clearFormField, toggleAddTournament, reloadHomeData} from '../store/home/actions'
+import {clearFormField, toggleAddTournament, disableAddTournament} from '../store/home/actions'
 
-function * createTournament () {
+function * createTournament ({refetch}) {
   try {
+    yield put(disableAddTournament(true))
+    yield put(toggleAddTournament())
     const data = yield select(state => pick(state.home, ['date', 'players']))
     yield Api.postCreateTournament({data})
-    yield put(toggleAddTournament())
+    yield refetch()
     yield put(clearFormField())
-    yield put(reloadHomeData())
+    yield put(disableAddTournament(false))
   } catch (error) {
     console.error('Post Failed', error)
   }

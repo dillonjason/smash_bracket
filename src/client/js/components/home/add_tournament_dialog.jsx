@@ -15,7 +15,7 @@ const Transition = (props) => (
   <Slide direction='up' {...props} />
 )
 
-const AddTournamentDialogComponent = ({addTournamentOpen, toggleAddTournament, clearFormField, submitAddTournament}) => {
+const AddTournamentDialogComponent = ({addTournamentOpen, toggleAddTournament, clearFormField, submitAddTournament, refetch}) => {
   const clearAndClose = () => {
     toggleAddTournament()
     clearFormField()
@@ -43,7 +43,7 @@ const AddTournamentDialogComponent = ({addTournamentOpen, toggleAddTournament, c
         <Button onClick={clearAndClose} color='primary'>
           Cancel
         </Button>
-        <Button onClick={submitAddTournament} color='primary'>
+        <Button onClick={() => submitAddTournament(refetch)} color='primary'>
           Submit
         </Button>
       </DialogActions>
@@ -52,6 +52,7 @@ const AddTournamentDialogComponent = ({addTournamentOpen, toggleAddTournament, c
 }
 
 AddTournamentDialogComponent.propTypes = {
+  refetch: PropTypes.func.isRequired,
   addTournamentOpen: PropTypes.bool.isRequired,
   toggleAddTournament: PropTypes.func.isRequired,
   clearFormField: PropTypes.func.isRequired,

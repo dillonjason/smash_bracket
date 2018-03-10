@@ -73,7 +73,10 @@ AddTournamentFormComponent.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  date: state.home.date,
+  date: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.string
+  ]),
   players: state.home.players
 })
 

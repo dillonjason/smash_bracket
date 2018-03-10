@@ -15,9 +15,9 @@ const styles = (theme) => ({
   }
 })
 
-export const AddFabComponent = ({classes, toggleAddTournament}) => {
+export const AddFabComponent = ({classes, toggleAddTournament, disableAddTournament}) => {
   return (
-    <Button variant='fab' color='secondary' aria-label='add' className={classes.fab} onClick={toggleAddTournament}>
+    <Button variant='fab' color='secondary' aria-label='add' className={classes.fab} onClick={toggleAddTournament} disabled={disableAddTournament}>
       <Icon>add</Icon>
     </Button>
   )
@@ -25,11 +25,16 @@ export const AddFabComponent = ({classes, toggleAddTournament}) => {
 
 AddFabComponent.propTypes = {
   classes: PropTypes.object.isRequired,
-  toggleAddTournament: PropTypes.func.isRequired
+  toggleAddTournament: PropTypes.func.isRequired,
+  disableAddTournament: PropTypes.bool.isRequired
 }
+
+const mapStateToProps = (state) => ({
+  disableAddTournament: state.home.disableAddTournament
+})
 
 const mapDispatchToProps = (dispatch) => ({
   toggleAddTournament: bindActionCreators(toggleAddTournament, dispatch)
 })
 
-export const AddFab = connect(null, mapDispatchToProps)(withStyles(styles, {withTheme: true})(AddFabComponent))
+export const AddFab = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, {withTheme: true})(AddFabComponent))

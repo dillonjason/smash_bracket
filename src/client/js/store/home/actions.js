@@ -20,20 +20,16 @@ export function clearFormField () {
   }
 }
 
-export function submitAddTournament () {
+export function submitAddTournament (refetch) {
   return {
-    type: ACTIONS.CREATE_TOURNAMENT
+    type: ACTIONS.CREATE_TOURNAMENT,
+    refetch
   }
 }
 
-export function reloadHomeData () {
+export function disableAddTournament (disabled) {
   return {
-    type: ACTIONS.RELOAD_HOME_DATA
-  }
-}
-
-export function homeDataReloaded () {
-  return {
-    type: ACTIONS.HOME_DATA_RELOADED
+    type: ACTIONS.DISABLE_ADD_TOURNAMENT,
+    disabled
   }
 }
