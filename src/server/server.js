@@ -55,6 +55,6 @@ app
   .use(apiRouter.routes())
   .use(viewRouter.routes())
 
-app.listen(3000)
+app.listen(config.get('port'))
 
 Logger.info(`Server listening at http://localhost:3000`)
