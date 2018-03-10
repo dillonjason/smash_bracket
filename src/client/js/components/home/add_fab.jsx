@@ -17,7 +17,7 @@ const styles = (theme) => ({
 
 export const AddFabComponent = ({classes, toggleAddTournament}) => {
   return (
-    <Button fab color='accent' aria-label='add' className={classes.fab} onClick={toggleAddTournament}>
+    <Button variant='fab' color='secondary' aria-label='add' className={classes.fab} onClick={toggleAddTournament}>
       <Icon>add</Icon>
     </Button>
   )

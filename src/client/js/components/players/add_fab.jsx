@@ -14,7 +14,7 @@ const styles = (theme) => ({
 
 export const AddFabComponent = ({classes}) => {
   return (
-    <Button fab color='accent' aria-label='add' className={classes.fab}>
+    <Button variant='fab' color='secondary' aria-label='add' className={classes.fab}>
       <Icon>add</Icon>
     </Button>
   )

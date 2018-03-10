@@ -8,27 +8,31 @@ import Typography from 'material-ui/Typography'
 import Button from 'material-ui/Button'
 import {withStyles} from 'material-ui/styles'
 
-const styles = {
+const styles = theme => ({
   flex: {
     flex: 1
   },
   link: {
     textDecoration: 'none'
+  },
+  button: {
+    color: theme.palette.common.white,
+    margin: theme.spacing.unit
   }
-}
+})
 
 export const HeaderComponent = ({classes}) => {
   return (
     <AppBar>
       <Toolbar>
-        <Typography type='title' color='inherit' className={classes.flex}>
+        <Typography variant='title' color='inherit' className={classes.flex}>
           Smash Brackets
         </Typography>
         <Link to={`/`} className={classes.link}>
-          <Button color='contrast'>Tournaments</Button>
+          <Button className={classes.button}>Tournaments</Button>
         </Link>
         <Link to={`/players`} className={classes.link}>
-          <Button color='contrast'>Players</Button>
+          <Button className={classes.button}>Players</Button>
         </Link>
       </Toolbar>
     </AppBar>
