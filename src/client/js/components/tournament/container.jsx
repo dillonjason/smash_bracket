@@ -5,6 +5,7 @@ import gql from 'graphql-tag'
 import {connect} from 'react-redux'
 import moment from 'moment'
 import Typography from 'material-ui/Typography'
+import Grid from 'material-ui/Grid'
 import flow from 'lodash/flow'
 
 import {Loading} from '../shared/loading'
@@ -16,17 +17,17 @@ export const ContainerComponent = ({data, editSetMatchesId}) => {
   const {loading, error, Tournament} = data
 
   return (
-    <div className='bracket-component'>
+    <Grid item xs={12} style={{display: 'flex', flexDirection: 'column'}} className='bracket-component'>
       {loading && <Loading />}
       {error && 'Error'}
-      {Tournament && <div>
-        <Typography type='display1'>
+      {Tournament && [
+        <Typography type='display1' key='title'>
           {moment(Tournament.date, 'YYYY-MM-DD').format('MMMM DD, YYYY')} Tournament
-        </Typography>
-        <Bracket tournamentId={Tournament.id} />
-        {editSetMatchesId && <EditMatchesDialog editSetMatchesId={editSetMatchesId} />}
-      </div>}
-    </div>
+        </Typography>,
+        <Bracket tournamentId={Tournament.id} key='bracket' />,
+        editSetMatchesId && <EditMatchesDialog editSetMatchesId={editSetMatchesId} key='edit-matches-dialog' />
+      ]}
+    </Grid>
   )
 }
 

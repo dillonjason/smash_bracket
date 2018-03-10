@@ -11,9 +11,9 @@ import {Tournament} from './tournament'
 export class Main extends Component {
   render () {
     return (
-      <div className='main-view' style={{height: '100%'}}>
+      <div className='main-view' style={{display: 'flex', minHeight: '100vh'}}>
         <Header />
-        <div className='content'>
+        <div className='content'style={{display: 'flex', flex: '1'}}>
           <Route exact path='/' component={Home} />
           <Route path='/players' component={PlayersView} />
           <Route path='/tournament/:tournamentId' component={Tournament} />

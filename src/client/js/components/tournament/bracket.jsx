@@ -125,37 +125,35 @@ export const BracketComponent = ({data, toggleEditMatches}) => {
   }
 
   return (
-    <div>
+    <div style={{flex: '1'}}>
       {loading && <Loading />}
       {error && 'Error'}
       {Tournament &&
-        <div style={{height: '1000px'}}>
-          <Tree
-            data={treeData}
-            collapsible={false}
-            pathFunc={'elbow'}
-            nodeSvgShape={{
-              shape: 'none'
-            }}
-            nodeSize={{
-              x: 200,
-              y: 150
-            }}
-            allowForeignObjects
-            nodeLabelComponent={{
-              render: <Node />,
-              foreignObjectWrapper: {
-                x: -88,
-                y: -63
-              }
-            }}
-            separation={{
-              siblings: 2,
-              nonSiblings: 3
-            }}
-            onClick={({attributes}) => onSetClick({attributes, toggleEditMatches})}
-          />
-        </div>
+        <Tree
+          data={treeData}
+          collapsible={false}
+          pathFunc={'elbow'}
+          nodeSvgShape={{
+            shape: 'none'
+          }}
+          nodeSize={{
+            x: 200,
+            y: 150
+          }}
+          allowForeignObjects
+          nodeLabelComponent={{
+            render: <Node />,
+            foreignObjectWrapper: {
+              x: -88,
+              y: -63
+            }
+          }}
+          separation={{
+            siblings: 2,
+            nonSiblings: 3
+          }}
+          onClick={({attributes}) => onSetClick({attributes, toggleEditMatches})}
+        />
       }
     </div>
   )
