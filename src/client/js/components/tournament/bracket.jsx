@@ -59,8 +59,9 @@ const generateTournamentTree = ({Tournament, set, endBranch}) => {
   } else {
     const children = []
     const attributes = {...getSetAttributes({set: setData})}
-    const setHasBye = setData.winnerFromSets.length === 1
+    const setHasBye = setData.winnerFromSets.length <= 1
     const setLosersStart = setData.loserFromSets.length === 2
+    const numPlayers = setData.winnerFromSets.length + setData.loserFromSets.length
 
     forEach(setData.winnerFromSets, fromSet => {
       const fromSetData = find(Tournament.sets, tournamentSet => tournamentSet.id === fromSet.id)
@@ -76,7 +77,7 @@ const generateTournamentTree = ({Tournament, set, endBranch}) => {
       const fromSetData = find(Tournament.sets, tournamentSet => tournamentSet.id === fromSet.id)
       setPlayerNames({attributes, set: fromSetData, isFromWinner: false})
       
-      if (!setLosersStart) {
+      if (!setLosersStart && numPlayers === 2) {
         children.push({
           name: get(fromSetData, 'name'),
           ...generateTournamentTree({Tournament, set: fromSetData, endBranch: setHasBye})
@@ -114,7 +115,7 @@ export const BracketComponent = ({data, toggleEditMatches}) => {
       {loading && <Loading />}
       {error && 'Error'}
       {Tournament &&
-        <div style={{height: '500px'}}>
+        <div style={{height: '1000px'}}>
           <Tree
             data={treeData}
             collapsible={false}
