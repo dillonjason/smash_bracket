@@ -8,6 +8,13 @@ export function toggleEditMatches ({id, name} = {}) {
   }
 }
 
+export function toggleDeleteTournament ({id, name} = {}) {
+  return {
+    type: ACTIONS.TOGGLE_DELETE_TOURNAMENT,
+    id: id || ''
+  }
+}
+
 export function updateFormField ({field, value}) {
   return {
     type: ACTIONS.UPDATE_MATCH_EDIT_FORM_FIELD,
@@ -25,5 +32,11 @@ export function clearFormField () {
 export function submitEditMatches () {
   return {
     type: ACTIONS.SUBMIT_UPDATE_MATCHES
+  }
+}
+
+export function submitDeleteTournament () {
+  return {
+    type: ACTIONS.SUBMIT_DELETE_TOURNAMENT
   }
 }

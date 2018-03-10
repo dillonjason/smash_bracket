@@ -2,6 +2,9 @@ import _ from 'lodash'
 import { ACTIONS } from './action_types'
 
 const initialState = {
+  deleteTournamentOpen: false,
+  deleteTournamentId: '',
+
   editMatchesOpen: false,
   editSetMatchesId: '',
   editSetMatchesName: '',
@@ -34,6 +37,12 @@ function reducer (state = initialState, action) {
         editMatchesOpen: !state.editMatchesOpen,
         editSetMatchesId: action.id,
         editSetMatchesName: action.name
+      })
+
+    case ACTIONS.TOGGLE_DELETE_TOURNAMENT:
+      return _.merge({}, state, {
+        deleteTournamentOpen: !state.deleteTournamentOpen,
+        deleteTournamentId: action.id
       })
 
     case ACTIONS.CLEAR_MATCH_EDIT_FORM_FIELD:
