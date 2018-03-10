@@ -15,6 +15,8 @@ import pick from 'lodash/pick'
 
 import Tree from 'react-d3-tree'
 
+import Snackbar from 'material-ui/Snackbar'
+
 import { Node } from './node'
 
 import { toggleEditMatches } from './../../store/tournament/actions'
@@ -25,8 +27,11 @@ export class BracketComponent extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      translate: undefined
+      translate: undefined,
+      snackbarOpen: false
     }
+
+    this.onSetClick = this.onSetClick.bind(this)
   }
 
   componentDidMount () {
@@ -121,12 +126,14 @@ export class BracketComponent extends Component {
     }
   }
   
-  onSetClick ({ attributes, toggleEditMatches }) {
+  onSetClick ({ attributes }) {
     if (attributes.firstPlayerReady && attributes.secondPlayerReady) {
-      toggleEditMatches({
+      this.props.toggleEditMatches({
         id: attributes.id,
         name: attributes.name
       })
+    } else {
+      this.setState({snackbarOpen: true})
     }
   }
 
@@ -174,9 +181,19 @@ export class BracketComponent extends Component {
             }}
             zoom={0.6}
             translate={this.state.translate}
-            onClick={({ attributes }) => this.onSetClick({ attributes, toggleEditMatches: this.props.toggleEditMatches })}
+            onClick={this.onSetClick}
           />
         }
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right'
+          }}
+          open={this.state.snackbarOpen}
+          autoHideDuration={3000}
+          message='Previous sets need to finish'
+          onClose={() => this.setState({snackbarOpen: false})}
+        />
       </div>
     )
   }
