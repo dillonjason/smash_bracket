@@ -95,7 +95,13 @@ export class BracketComponent extends Component {
         }
     } else {
       const children = []
-      const attributes = { ...this.getSetAttributes({ set: setData }) }
+      const attributes = {
+        ...this.getSetAttributes({ set: setData }),
+        firstPlayer: get(setData, 'matches.0.firstPlayer.name'),
+        firstPlayerReady: Boolean(get(setData, 'matches.0.firstPlayer.name')),
+        secondPlayer: get(setData, 'matches.0.secondPlayer.name'),
+        secondPlayerReady: Boolean(get(setData, 'matches.0.secondPlayer.name'))
+      }
       const setHasBye = setData.winnerFromSets.length <= 1
       const setLosersStart = setData.loserFromSets.length === 2
       const numPlayers = setData.winnerFromSets.length + setData.loserFromSets.length
@@ -164,7 +170,7 @@ export class BracketComponent extends Component {
               shape: 'none'
             }}
             nodeSize={{
-              x: 200,
+              x: 250,
               y: 150
             }}
             allowForeignObjects
