@@ -3,6 +3,7 @@ import _ from 'lodash'
 
 import {Bracket} from '../util/bracket'
 import {GraphQl} from './../util/graphql'
+import {SetUtils} from '../util/set'
 
 let apiRouter = new Router({
   prefix: '/smash_bracket/api'
@@ -39,45 +40,13 @@ apiRouter
 
     await graphQl.updateMatches({matches})
 
-    let winsNeeded = Math.floor(matches.length / 2) + 1
-
-    const winningCount = _.countBy(matches, match => match.winner)
-    const setWinner = _.find(_.keys(winningCount), winnerId => winningCount[winnerId] >= winsNeeded)
-
-    const losingCount = _.countBy(matches, match => match.loser)
-    const setLoser = _.find(_.keys(losingCount), loserId => losingCount[loserId] >= winsNeeded)
+    const {setWinner, setLoser} = SetUtils.getWinnerAndLoser({set, matches})
 
     if (setWinner) {
       const setProgress = await graphQl.getSetProgress({set})
       const winnerSet = _.get(setProgress, 'Set.winnerSet')
       const loserSet = _.get(setProgress, 'Set.loserSet')
-      const setsWithMatches = []
-
-      if (winnerSet) {
-        const matches = _.get(winnerSet, 'matches')
-        const position = _.get(matches, '0.firstPlayer') ? 'secondPlayer' : 'firstPlayer'
-        const clearPosition = _.get(matches, '0.firstPlayer') ? 'firstPlayer' : 'secondPlayer'
-
-        _.forEach(matches, match => {
-          _.set(match, position, setWinner)
-          _.set(match, clearPosition, null)
-        })
-
-        setsWithMatches.push(winnerSet)
-      }
-
-      if (loserSet) {
-        const matches = _.get(loserSet, 'matches')
-        const position = _.get(matches, '0.firstPlayer') ? 'secondPlayer' : 'firstPlayer'
-        const clearPosition = _.get(matches, '0.firstPlayer') ? 'firstPlayer' : 'secondPlayer'
-
-        _.forEach(matches, match => {
-          _.set(match, position, setLoser)
-          _.set(match, clearPosition, null)
-        })
-
-        setsWithMatches.push(loserSet)
-      }
+      const updatedNextSets = SetUtils.getUpdatedNextSets({setWinner, setLoser, winnerSet, loserSet})
   
       await Promise.all([
         graphQl.updateSetWinner({
@@ -87,7 +56,7 @@ apiRouter
           loserSet
         }),
         graphQl.connectPlayersToMatches({
-          sets: setsWithMatches
+          sets: updatedNextSets
         })
       ])
     }
