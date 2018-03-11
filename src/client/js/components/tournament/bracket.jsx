@@ -80,7 +80,14 @@ export class BracketComponent extends Component {
   }
   
   getSetAttributes ({ set }) {
-    return pick(set, ['id', 'name', 'winnerId'])
+    const attributes = pick(set, ['id', 'name'])
+    const winner = get(set, 'setWinner.name')
+
+    if (winner) {
+      attributes.winner = winner
+    }
+
+    return attributes
   }
   
   generateTournamentTree ({ Tournament, set, endBranch }) {
