@@ -92,10 +92,45 @@ export const addWinnerLoserSetsToSetsQuery = ({sets}) => {
   `
 }
 
-export const updateSetWinner = ({set, setWinner}) => `
-  mutation {
-    updateSet(id: "${set}", setWinnerId: "${setWinner}") {
-      id
+export const getSetProgress = ({set}) => (`
+    query {
+      Set(id: "${set}") {
+        id,
+        winnerSet {
+          id,
+          matches {
+            id
+            firstPlayer {
+              id
+            }
+            secondPlayer {
+              id
+            }
+          }
+        }
+        loserSet {
+          id
+          matches {
+            id
+            firstPlayer {
+              id
+            }
+            secondPlayer {
+              id
+            }
+          }
+        }
+      }
     }
-  }
-`
+  `
+)
+
+export const updateSetWinner = ({set, setWinner}) => {
+  return `
+    mutation {
+      updateSet(id: "${set}", setWinnerId: "${setWinner}") {
+        id
+      }
+    }
+  `
+}

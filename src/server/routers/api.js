@@ -43,7 +43,52 @@ apiRouter
 
     const winningCount = _.countBy(matches, match => match.winner)
     const setWinner = _.find(_.keys(winningCount), winnerId => winningCount[winnerId] >= winsNeeded)
-    await graphQl.updateSetWinner({set, setWinner})
+    const setLoser = _.find(_.keys(winningCount), winnerId => winningCount[winnerId] < winsNeeded)
+
+    if (setWinner) {
+      const setProgress = await graphQl.getSetProgress({set})
+      const winnerSet = _.get(setProgress, 'Set.winnerSet')
+      const loserSet = _.get(setProgress, 'Set.loserSet')
+      const setsWithMatches = []
+
+      if (winnerSet) {
+        const matches = _.get(winnerSet, 'matches')
+        const position = _.get(matches, '0.firstPlayer') ? 'secondPlayer' : 'firstPlayer'
+        const clearPosition = _.get(matches, '0.firstPlayer') ? 'firstPlayer' : 'secondPlayer'
+
+        _.forEach(matches, match => {
+          _.set(match, position, setWinner)
+          _.set(match, clearPosition, null)
+        })
+
+        setsWithMatches.push(winnerSet)
+      }
+
+      if (loserSet) {
+        const matches = _.get(loserSet, 'matches')
+        const position = _.get(matches, '0.firstPlayer') ? 'secondPlayer' : 'firstPlayer'
+        const clearPosition = _.get(matches, '0.firstPlayer') ? 'firstPlayer' : 'secondPlayer'
+
+        _.forEach(matches, match => {
+          _.set(match, position, setLoser)
+          _.set(match, clearPosition, null)
+        })
+
+        setsWithMatches.push(loserSet)
+      }
+  
+      await Promise.all([
+        graphQl.updateSetWinner({
+          set,
+          setWinner,
+          winnerSet,
+          loserSet
+        }),
+        graphQl.connectPlayersToMatches({
+          sets: setsWithMatches
+        })
+      ])
+    }
 
     ctx.status = 200
   })

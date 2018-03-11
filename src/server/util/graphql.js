@@ -1,7 +1,7 @@
 import {Request} from './request'
 import {createTournamentQuery, addPlayersToTournamentQuery, addSetsToTournamentQuery, deleteTournamentQuery, getTournamentSetsQuery} from '../queries/tournament'
 import {createMultipleMatchesQuery, addPlayersToMatchesQuery, updateMultipleMatchesQuery} from '../queries/match'
-import {createMultipleSetsQuery, addMatchesToSetsQuery, addWinnerLoserSetsToSetsQuery, updateSetWinner} from '../queries/set'
+import {createMultipleSetsQuery, addMatchesToSetsQuery, addWinnerLoserSetsToSetsQuery, updateSetWinner, getSetProgress} from '../queries/set'
 
 export class GraphQl {
   constructor (logger) {
@@ -72,8 +72,8 @@ export class GraphQl {
     return data.data
   }
 
-  async updateSetWinner ({set, setWinner}) {
-    await this.request.post(this._getPostData(updateSetWinner({set, setWinner})))
+  async updateSetWinner ({set, setWinner, setLoser, winnersMatch, losersMatch}) {
+    await this.request.post(this._getPostData(updateSetWinner({set, setWinner, setLoser, winnersMatch, losersMatch})))
   }
 
   async getTournamentSets ({id}) {
@@ -85,5 +85,12 @@ export class GraphQl {
 
   async deleteTournament ({id, sets, matches}) {
     await this.request.post(this._getPostData(deleteTournamentQuery({id, sets, matches})))
+  }
+
+  async getSetProgress ({set}) {
+    const response = await this.request.post(this._getPostData(getSetProgress({set})))
+    const data = await response.json()
+
+    return data.data
   }
 }
