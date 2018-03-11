@@ -66,13 +66,15 @@ export class BracketComponent extends Component {
         playerName = winnerId === get(set, 'firstPlayer.id') ? get(set, 'secondPlayer.name') : get(set, 'firstPlayer.name')
       }
     }
-  
-    if (attributes.firstPlayer) {
-      attributes.secondPlayer = playerName
-      attributes.secondPlayerReady = playerReady
-    } else {
-      attributes.firstPlayer = playerName
-      attributes.firstPlayerReady = playerReady
+
+    if (!playerReady) {
+      if (attributes.firstPlayer) {
+        attributes.secondPlayer = playerName
+        attributes.secondPlayerReady = playerReady
+      } else {
+        attributes.firstPlayer = playerName
+        attributes.firstPlayerReady = playerReady
+      }
     }
   }
   
