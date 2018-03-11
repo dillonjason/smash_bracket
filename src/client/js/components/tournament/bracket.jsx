@@ -29,7 +29,8 @@ export class BracketComponent extends Component {
     super(props)
     this.state = {
       translate: undefined,
-      snackbarOpen: false
+      snackbarOpen: false,
+      snackbarMessage: ''
     }
 
     this.onSetClick = this.onSetClick.bind(this)
@@ -79,7 +80,7 @@ export class BracketComponent extends Component {
   }
   
   getSetAttributes ({ set }) {
-    return pick(set, ['id', 'name'])
+    return pick(set, ['id', 'name', 'winnerId'])
   }
   
   generateTournamentTree ({ Tournament, set, endBranch }) {
@@ -143,13 +144,22 @@ export class BracketComponent extends Component {
   }
   
   onSetClick ({ attributes }) {
-    if (attributes.firstPlayerReady && attributes.secondPlayerReady) {
+    if (!attributes.firstPlayer) {
+      // This is a placeholder
+      this.setState({
+        snackbarOpen: true,
+        snackbarMessage: 'Unable to open placeholder matches'
+      })
+    } else if (attributes.firstPlayerReady && attributes.secondPlayerReady) {
       this.props.toggleEditMatches({
         id: attributes.id,
         name: attributes.name
       })
     } else {
-      this.setState({snackbarOpen: true})
+      this.setState({
+        snackbarOpen: true,
+        snackbarMessage: 'Previous sets need to finish'
+      })
     }
   }
 
@@ -207,7 +217,7 @@ export class BracketComponent extends Component {
           }}
           open={this.state.snackbarOpen}
           autoHideDuration={3000}
-          message='Previous sets need to finish'
+          message={this.state.snackbarMessage}
           onClose={() => this.setState({snackbarOpen: false})}
         />
       </div>
