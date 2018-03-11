@@ -22,6 +22,7 @@ import { Node } from './node'
 import { toggleEditMatches } from './../../store/tournament/actions'
 
 import { Loading } from '../shared/loading'
+import { ApolloError } from '../shared/apollo_error'
 
 export class BracketComponent extends Component {
   constructor (props) {
@@ -151,7 +152,7 @@ export class BracketComponent extends Component {
   }
 
   render () {
-    const { loading, error, Tournament } = this.props.data
+    const { loading, error, Tournament, refetch } = this.props.data
     const treeData = []
 
     if (Tournament) {
@@ -167,7 +168,7 @@ export class BracketComponent extends Component {
     return (
       <div style={{ flex: '1' }} ref={tc => (this.treeContainer = tc)}>
         {loading && <Loading />}
-        {error && 'Error'}
+        {error && <ApolloError refetch={refetch} />}
         {Tournament &&
           <Tree
             data={treeData}

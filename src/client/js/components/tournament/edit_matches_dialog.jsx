@@ -17,6 +17,7 @@ import Typography from 'material-ui/Typography'
 import Divider from 'material-ui/Divider'
 
 import {Loading} from '../shared/loading'
+import {ApolloError} from '../shared/apollo_error'
 import {EditMatchForm} from './edit_match_form'
 
 const Transition = (props) => (
@@ -24,7 +25,7 @@ const Transition = (props) => (
 )
 
 const EditMatchesDialogComponent = ({editMatchesOpen, editSetMatchesName, toggleEditMatches, clearFormField, submitEditMatches, data, bracketRefetch}) => {
-  const {loading, error, Set} = data
+  const {loading, error, Set, refetch} = data
 
   console.log(bracketRefetch.toString())
 
@@ -50,7 +51,7 @@ const EditMatchesDialogComponent = ({editMatchesOpen, editSetMatchesName, toggle
           Fill out the form and click submit to update set matches
         </DialogContentText>
         {loading && <Loading />}
-        {error && 'Error'}
+        {error && <ApolloError refetch={refetch} />}
         {Set && map(Set.matches, (match, index) => (
           [
             <Typography type='subheading'>

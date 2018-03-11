@@ -11,6 +11,7 @@ import {withStyles} from 'material-ui/styles'
 
 import {MultiSelect} from './../shared/multi_select'
 import {Loading} from '../shared/loading'
+import {ApolloError} from '../shared/apollo_error'
 
 import {updateFormField} from '../../store/home/actions'
 
@@ -25,7 +26,7 @@ const styles = theme => ({
 })
 
 const AddTournamentFormComponent = ({classes, data, date, players, updateFormField}) => {
-  const {loading, error, allPlayers} = data
+  const {loading, error, allPlayers, refetch} = data
 
   const onDateChange = (event) => {
     updateFormField({field: 'date', value: event.target.value})
@@ -38,7 +39,7 @@ const AddTournamentFormComponent = ({classes, data, date, players, updateFormFie
   return (
     <div className='add-tournament-form-component'>
       {loading && <Loading />}
-      {error && 'Error'}
+      {error && <ApolloError refetch={refetch} />}
       {allPlayers &&
         <div className={classes.form}>
           <TextField

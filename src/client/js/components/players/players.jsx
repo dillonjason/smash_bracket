@@ -4,14 +4,15 @@ import {graphql} from 'react-apollo'
 import gql from 'graphql-tag'
 import {PlayersTable} from './players_table'
 import {Loading} from '../shared/loading'
+import {ApolloError} from '../shared/apollo_error'
 
 export const PlayersComponent = ({data}) => {
-  const {loading, error, allPlayers} = data
+  const {loading, error, allPlayers, refetch} = data
 
   return (
     <div className='tournaments-component'>
       {loading && <Loading />}
-      {error && 'Error'}
+      {error && <ApolloError refetch={refetch} />}
       {allPlayers && <PlayersTable players={allPlayers} />}
     </div>
   )

@@ -13,6 +13,7 @@ import flow from 'lodash/flow'
 import {toggleDeleteTournament} from '../../store/tournament/actions'
 
 import {Loading} from '../shared/loading'
+import {ApolloError} from '../shared/apollo_error'
 
 import {Bracket} from './bracket'
 import {EditMatchesDialog} from './edit_matches_dialog'
@@ -36,7 +37,7 @@ export class ContainerComponent extends Component {
 
   render () {
     const {data, editSetMatchesId, toggleDeleteTournament} = this.props
-    const {loading, error, Tournament} = data
+    const {loading, error, Tournament, refetch} = data
     let tournamentName = ''
   
     if (Tournament) {
@@ -46,7 +47,7 @@ export class ContainerComponent extends Component {
     return (
       <Grid item xs={12} style={{display: 'flex', flexDirection: 'column'}} className='bracket-component'>
         {loading && <Loading />}
-        {error && 'Error'}
+        {error && <ApolloError refetch={refetch} />}
         {Tournament && [
           <div style={{display: 'flex'}} key='title'>
             <Typography variant='display1' style={{flex: '1'}}>

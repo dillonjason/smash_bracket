@@ -14,6 +14,7 @@ import Radio, {RadioGroup} from 'material-ui/Radio'
 
 import {CharacterSelect} from './../shared/character_select'
 import {Loading} from '../shared/loading'
+import {ApolloError} from '../shared/apollo_error'
 
 import {updateFormField} from '../../store/tournament/actions'
 
@@ -67,7 +68,7 @@ class EditMatchFormComponent extends Component {
 
   render () {
     const {data, classes, matchIndex, matchData, updateFormField} = this.props
-    const {loading, error, Match} = data
+    const {loading, error, Match, refetch} = data
     const matchPrefix = this.prefixes[matchIndex]
     const thisMatchData = matchData[matchIndex]
 
@@ -82,7 +83,7 @@ class EditMatchFormComponent extends Component {
     return (
       <div className='add-tournament-form-component'>
         {loading && <Loading />}
-        {error && 'Error'}
+        {error && <ApolloError refetch={refetch} />}
         {Match &&
           <form>
             <CharacterSelect

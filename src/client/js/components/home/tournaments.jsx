@@ -8,6 +8,7 @@ import {TournamentsTable} from './tournaments_table'
 import { AddTournamentDialog } from './add_tournament_dialog'
 
 import {Loading} from '../shared/loading'
+import {ApolloError} from '../shared/apollo_error.jsx'
 
 export class TournamentsComponent extends Component {
   render () {
@@ -16,7 +17,7 @@ export class TournamentsComponent extends Component {
     return (
       <div className='tournaments-component'>
         {loading && <Loading />}
-        {error && 'Error'}
+        {error && <ApolloError refetch={refetch} />}
         {allTournaments && <TournamentsTable tournaments={allTournaments} refetch={refetch} />}
         <AddTournamentDialog refetch={refetch} />
       </div>
