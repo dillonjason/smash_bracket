@@ -138,7 +138,7 @@ export class Bracket {
       const set = {
         name: this._getSetName(),
         firstPlayer: byes.pop(),
-        secondPLayer: byes.shift(),
+        secondPlayer: byes.shift(),
         id: `L_0`
       }
 
