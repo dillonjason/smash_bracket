@@ -27,8 +27,6 @@ const Transition = (props) => (
 const EditMatchesDialogComponent = ({editMatchesOpen, editSetMatchesName, toggleEditMatches, clearFormField, submitEditMatches, data, bracketRefetch}) => {
   const {loading, error, Set, refetch} = data
 
-  console.log(bracketRefetch.toString())
-
   const clearAndClose = () => {
     toggleEditMatches()
     clearFormField()
