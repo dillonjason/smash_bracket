@@ -44,6 +44,13 @@ export class BracketComponent extends Component {
     })
   }
 
+  componentDidUpdate () {
+    if (this.props.data.Tournament) {
+      const {refetch} = this.props.data
+      this.props.liftRefech({refetch})
+    }
+  }
+
   setPlayerNames ({ attributes, set, isFromWinner }) {
     const prefix = isFromWinner ? 'Winner Of' : 'Loser Of'
     let playerName = `${prefix} ${get(set, 'name')}`
@@ -206,6 +213,7 @@ export class BracketComponent extends Component {
 }
 
 BracketComponent.propTypes = {
+  liftRefech: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
   toggleEditMatches: PropTypes.func.isRequired
 }

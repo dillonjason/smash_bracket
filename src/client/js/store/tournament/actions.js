@@ -29,15 +29,15 @@ export function clearFormField () {
   }
 }
 
-export function submitEditMatches () {
+export function submitEditMatches (refetch) {
   return {
-    type: ACTIONS.SUBMIT_UPDATE_MATCHES
+    type: ACTIONS.SUBMIT_UPDATE_MATCHES,
+    refetch
   }
 }
 
-export function submitDeleteTournament (history) {
+export function submitDeleteTournament () {
   return {
-    type: ACTIONS.SUBMIT_DELETE_TOURNAMENT,
-    history
+    type: ACTIONS.SUBMIT_DELETE_TOURNAMENT
   }
 }

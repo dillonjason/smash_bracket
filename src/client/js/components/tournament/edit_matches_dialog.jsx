@@ -23,8 +23,10 @@ const Transition = (props) => (
   <Slide direction='up' {...props} />
 )
 
-const EditMatchesDialogComponent = ({editMatchesOpen, editSetMatchesName, toggleEditMatches, clearFormField, submitEditMatches, data}) => {
+const EditMatchesDialogComponent = ({editMatchesOpen, editSetMatchesName, toggleEditMatches, clearFormField, submitEditMatches, data, bracketRefetch}) => {
   const {loading, error, Set} = data
+
+  console.log(bracketRefetch.toString())
 
   const clearAndClose = () => {
     toggleEditMatches()
@@ -63,7 +65,7 @@ const EditMatchesDialogComponent = ({editMatchesOpen, editSetMatchesName, toggle
         <Button onClick={clearAndClose} color='primary'>
           Cancel
         </Button>
-        <Button onClick={submitEditMatches} color='primary'>
+        <Button onClick={() => submitEditMatches(bracketRefetch)} color='primary'>
           Submit
         </Button>
       </DialogActions>
@@ -72,6 +74,7 @@ const EditMatchesDialogComponent = ({editMatchesOpen, editSetMatchesName, toggle
 }
 
 EditMatchesDialogComponent.propTypes = {
+  bracketRefetch: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
   editMatchesOpen: PropTypes.bool.isRequired,
   editSetMatchesName: PropTypes.string.isRequired,

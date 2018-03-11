@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {graphql} from 'react-apollo'
 import gql from 'graphql-tag'
@@ -18,33 +18,57 @@ import {Bracket} from './bracket'
 import {EditMatchesDialog} from './edit_matches_dialog'
 import {DeleteWarning} from './delete_warning'
 
-export const ContainerComponent = ({data, editSetMatchesId, toggleDeleteTournament}) => {
-  const {loading, error, Tournament} = data
-  let tournamentName = ''
+export class ContainerComponent extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      bracketRefetch: f => f
+    }
 
-  if (Tournament) {
-    tournamentName = moment(Tournament.date, 'YYYY-MM-DD').format('MMMM DD, YYYY')
+    this.setBracketRefetch = this.setBracketRefetch.bind(this)
   }
 
-  return (
-    <Grid item xs={12} style={{display: 'flex', flexDirection: 'column'}} className='bracket-component'>
-      {loading && <Loading />}
-      {error && 'Error'}
-      {Tournament && [
-        <div style={{display: 'flex'}} key='title'>
-          <Typography variant='display1' style={{flex: '1'}}>
-            {tournamentName} Tournament
-          </Typography>
-          <Button variant='raised' color='secondary' onClick={() => toggleDeleteTournament({id: Tournament.id})}>
-            Delete Tournament
-          </Button>
-        </div>,
-        <Bracket tournamentId={Tournament.id} key='bracket' />,
-        editSetMatchesId && <EditMatchesDialog editSetMatchesId={editSetMatchesId} key='edit-matches-dialog' />,
-        <DeleteWarning tournamentName={tournamentName} key='delete-warning' />
-      ]}
-    </Grid>
-  )
+  setBracketRefetch ({refetch}) {
+    this.setState({
+      bracketRefetch: refetch
+    })
+  }
+
+  render () {
+    const {data, editSetMatchesId, toggleDeleteTournament} = this.props
+    const {loading, error, Tournament} = data
+    let tournamentName = ''
+  
+    if (Tournament) {
+      tournamentName = moment(Tournament.date, 'YYYY-MM-DD').format('MMMM DD, YYYY')
+    }
+  
+    return (
+      <Grid item xs={12} style={{display: 'flex', flexDirection: 'column'}} className='bracket-component'>
+        {loading && <Loading />}
+        {error && 'Error'}
+        {Tournament && [
+          <div style={{display: 'flex'}} key='title'>
+            <Typography variant='display1' style={{flex: '1'}}>
+              {tournamentName} Tournament
+            </Typography>
+            <Button variant='raised' color='secondary' onClick={() => toggleDeleteTournament({id: Tournament.id})}>
+              Delete Tournament
+            </Button>
+          </div>,
+          <Bracket tournamentId={Tournament.id} liftRefech={this.setBracketRefetch} key='bracket' />,
+          editSetMatchesId && (
+            <EditMatchesDialog
+              editSetMatchesId={editSetMatchesId}
+              key='edit-matches-dialog'
+              bracketRefetch={this.state.bracketRefetch}
+            />
+          ),
+          <DeleteWarning tournamentName={tournamentName} key='delete-warning' />
+        ]}
+      </Grid>
+    )
+  }
 }
 
 ContainerComponent.propTypes = {

@@ -8,7 +8,7 @@ import {Api} from '../util/api'
 import { ACTIONS } from '../store/tournament/action_types'
 import {clearFormField, toggleEditMatches, toggleDeleteTournament} from '../store/tournament/actions'
 
-function * updateSetMatches () {
+function * updateSetMatches ({refetch}) {
   try {
     const stateData = yield select(state => pick(state.tournament, [
       'editSetMatchesId',
@@ -52,10 +52,10 @@ function * updateSetMatches () {
         }
       ]
     }
-
-    yield Api.postUpdateMatches({data})
     yield put(toggleEditMatches())
     yield put(clearFormField())
+    yield Api.postUpdateMatches({data})
+    yield refetch()
   } catch (error) {
     console.error('Post Failed', error)
   }
