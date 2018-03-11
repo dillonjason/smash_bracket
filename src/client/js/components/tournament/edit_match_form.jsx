@@ -80,6 +80,21 @@ class EditMatchFormComponent extends Component {
       })
     }
 
+    const handleRadioChange = ({event}) => {
+      const winner = event.target.value
+      const loser = get(Match, 'firstPlayer.id') === winner ? get(Match, 'secondPlayer.id') : get(Match, 'firstPlayer.id')
+
+      updateFormField({
+        field: `${matchPrefix}MatchWinner`,
+        value: winner
+      })
+
+      updateFormField({
+        field: `${matchPrefix}MatchLoser`,
+        value: loser
+      })
+    }
+
     return (
       <div className='add-tournament-form-component'>
         {loading && <Loading />}
@@ -106,17 +121,17 @@ class EditMatchFormComponent extends Component {
                 row
                 name={`${Match.id}_winner`}
                 value={thisMatchData.matchWinner}
-                onChange={event => handleChange({event, field: 'MatchWinner'})}
+                onChange={event => handleRadioChange({event, field: 'MatchWinner'})}
               >
                 <FormControlLabel
                   value={`${get(Match, 'firstPlayer.id')}`}
                   control={<Radio />}
-                  label={`${get(Match, 'firstPlayer.name')}`}
+                  label={`${get(Match, 'firstPlayer.name', 'Unknown')}`}
                 />
                 <FormControlLabel
                   value={`${get(Match, 'secondPlayer.id')}`}
                   control={<Radio />}
-                  label={`${get(Match, 'secondPlayer.name')}`}
+                  label={`${get(Match, 'secondPlayer.name', 'Unknown')}`}
                 />
               </RadioGroup>
             </FormControl>

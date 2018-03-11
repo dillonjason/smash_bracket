@@ -43,7 +43,9 @@ apiRouter
 
     const winningCount = _.countBy(matches, match => match.winner)
     const setWinner = _.find(_.keys(winningCount), winnerId => winningCount[winnerId] >= winsNeeded)
-    const setLoser = _.find(_.keys(winningCount), winnerId => winningCount[winnerId] < winsNeeded)
+
+    const losingCount = _.countBy(matches, match => match.loser)
+    const setLoser = _.find(_.keys(losingCount), loserId => losingCount[loserId] >= winsNeeded)
 
     if (setWinner) {
       const setProgress = await graphQl.getSetProgress({set})

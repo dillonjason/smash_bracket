@@ -18,16 +18,19 @@ function * updateSetMatches ({refetch}) {
       'firstMatchFirstCharacter',
       'firstMatchSecondCharacter',
       'firstMatchWinner',
+      'firstMatchLoser',
 
       'secondMatchId',
       'secondMatchFirstCharacter',
       'secondMatchSecondCharacter',
       'secondMatchWinner',
+      'secondMatchLoser',
 
       'thirdMatchId',
       'thirdMatchFirstCharacter',
       'thirdMatchSecondCharacter',
-      'thirdMatchWinner'
+      'thirdMatchWinner',
+      'thirdMatchLoser'
     ]))
 
     const data = {
@@ -37,19 +40,22 @@ function * updateSetMatches ({refetch}) {
           id: stateData.firstMatchId,
           firstCharacter: stateData.firstMatchFirstCharacter,
           secondCharacter: stateData.firstMatchSecondCharacter,
-          winner: stateData.firstMatchWinner
+          winner: stateData.firstMatchWinner,
+          loser: stateData.firstMatchLoser
         },
         {
           id: stateData.secondMatchId,
           firstCharacter: stateData.secondMatchFirstCharacter,
           secondCharacter: stateData.secondMatchSecondCharacter,
-          winner: stateData.secondMatchWinner
+          winner: stateData.secondMatchWinner,
+          loser: stateData.secondMatchLoser
         },
         {
           id: stateData.thirdMatchId,
           firstCharacter: stateData.thirdMatchFirstCharacter,
           secondCharacter: stateData.thirdMatchSecondCharacter,
-          winner: stateData.thirdMatchWinner
+          winner: stateData.thirdMatchWinner,
+          loser: stateData.thirdMatchLoser
         }
       ]
     }

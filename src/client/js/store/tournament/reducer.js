@@ -14,18 +14,21 @@ const initialState = {
   firstMatchFirstCharacter: '',
   firstMatchSecondCharacter: '',
   firstMatchWinner: '',
+  firstMatchLoser: '',
 
   // Second Match
   secondMatchId: '',
   secondMatchFirstCharacter: '',
   secondMatchSecondCharacter: '',
   secondMatchWinner: '',
+  secondMatchLoser: '',
 
   // Third Match
   thirdMatchId: '',
   thirdMatchFirstCharacter: '',
   thirdMatchSecondCharacter: '',
-  thirdMatchWinner: ''
+  thirdMatchWinner: '',
+  thirdMatchLoser: ''
 }
 
 function reducer (state = initialState, action) {
@@ -51,16 +54,19 @@ function reducer (state = initialState, action) {
         firstMatchFirstCharacter: '',
         firstMatchSecondCharacter: '',
         firstMatchWinner: '',
+        firstMatchLoser: '',
 
         secondMatchId: '',
         secondMatchFirstCharacter: '',
         secondMatchSecondCharacter: '',
         secondMatchWinner: '',
+        secondMatchLoser: '',
 
         thirdMatchId: '',
         thirdMatchFirstCharacter: '',
         thirdMatchSecondCharacter: '',
-        thirdMatchWinner: ''
+        thirdMatchWinner: '',
+        thirdMatchLoser: ''
       })
 
     case ACTIONS.UPDATE_MATCH_EDIT_FORM_FIELD:
