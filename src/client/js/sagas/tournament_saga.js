@@ -7,6 +7,7 @@ import {Api} from '../util/api'
 // Store Imports
 import { ACTIONS } from '../store/tournament/action_types'
 import {clearFormField, toggleEditMatches, toggleDeleteTournament} from '../store/tournament/actions'
+import {toggleGlobalSnackbar} from '../store/app/actions'
 
 function * updateSetMatches ({refetch}) {
   try {
@@ -57,7 +58,7 @@ function * updateSetMatches ({refetch}) {
     yield Api.postUpdateMatches({data})
     yield refetch()
   } catch (error) {
-    console.error('Post Failed', error)
+    yield put(toggleGlobalSnackbar({message: 'Failed Updating Match'}))
   }
 }
 
@@ -68,7 +69,7 @@ function * deleteTournament () {
     yield put(toggleDeleteTournament())
   } catch (error) {
     yield put(toggleDeleteTournament())
-    console.error('Post Failed', error)
+    yield put(toggleGlobalSnackbar({message: 'Failed Deleting Tournament'}))
   }
 }
 

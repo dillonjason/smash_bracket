@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Route} from 'react-router-dom'
 
 import {Header} from './../components/main/header'
+import {GlobalSnackBar} from './../components/main/global_snackbar'
 
 // Views
 import {Home} from './home'
@@ -18,6 +19,7 @@ export class Main extends Component {
           <Route path='/players' component={PlayersView} />
           <Route path='/tournament/:tournamentId' component={Tournament} />
         </div>
+        <GlobalSnackBar />
       </div>
     )
   }
