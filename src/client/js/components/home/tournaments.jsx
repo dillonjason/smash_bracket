@@ -37,6 +37,12 @@ const query = gql`
       firstPlace {
         name
       }
+      secondPlace {
+        name
+      }
+      thirdPlace {
+        name
+      }
       date
     }
   }

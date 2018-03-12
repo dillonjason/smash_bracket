@@ -41,8 +41,9 @@ export class TournamentsTableComponent extends Component {
           <TableHead>
             <TableRow>
               <TableCell>Date</TableCell>
-              <TableCell>Sets Remaining</TableCell>
-              <TableCell>Winner</TableCell>
+              <TableCell>First Place</TableCell>
+              <TableCell>Second Place</TableCell>
+              <TableCell>Third Place</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
@@ -50,7 +51,8 @@ export class TournamentsTableComponent extends Component {
             {showOptimistic &&
               <TableRow key='optimistic'>
                 <TableCell>{moment(date, 'YYYY-MM-DD').format('MMMM DD, YYYY')}</TableCell>
-                <TableCell>{(2 * players.length) - 1}</TableCell>
+                <TableCell>In Progress</TableCell>
+                <TableCell>In Progress</TableCell>
                 <TableCell>In Progress</TableCell>
                 <TableCell>
                   <Button color='secondary' disabled>Open Bracket</Button>
@@ -63,8 +65,9 @@ export class TournamentsTableComponent extends Component {
               return ignore ? null : (
                 <TableRow key={tournament.id}>
                   <TableCell>{moment(tournament.date, 'YYYY-MM-DD').format('MMMM DD, YYYY')}</TableCell>
-                  <TableCell>{get(tournament, 'setsRemaining', 0)}</TableCell>
                   <TableCell>{get(tournament, 'firstPlace.name', 'In Progress')}</TableCell>
+                  <TableCell>{get(tournament, 'secondPlace.name', 'In Progress')}</TableCell>
+                  <TableCell>{get(tournament, 'thirdPlace.name', 'In Progress')}</TableCell>
                   <TableCell>
                     <Link to={`/tournament/${tournament.id}`} className={classes.link}>
                       <Button color='secondary'>Open Bracket</Button>

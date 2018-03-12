@@ -9,6 +9,7 @@ import Typography from 'material-ui/Typography'
 import Button from 'material-ui/Button'
 import Grid from 'material-ui/Grid'
 import flow from 'lodash/flow'
+import get from 'lodash/get'
 
 import {toggleDeleteTournament} from '../../store/tournament/actions'
 
@@ -18,6 +19,7 @@ import {ApolloError} from '../shared/apollo_error'
 import {Bracket} from './bracket'
 import {EditMatchesDialog} from './edit_matches_dialog'
 import {DeleteWarning} from './delete_warning'
+import {Placing} from './placing'
 
 export class ContainerComponent extends Component {
   constructor (props) {
@@ -39,9 +41,11 @@ export class ContainerComponent extends Component {
     const {data, editSetMatchesId, toggleDeleteTournament} = this.props
     const {loading, error, Tournament, refetch} = data
     let tournamentName = ''
+    let hasPlacing = false
   
     if (Tournament) {
       tournamentName = moment(Tournament.date, 'YYYY-MM-DD').format('MMMM DD, YYYY')
+      hasPlacing = Boolean(get(Tournament, 'firstPlace.name'))
     }
   
     return (
@@ -50,13 +54,14 @@ export class ContainerComponent extends Component {
         {error && <ApolloError refetch={refetch} />}
         {Tournament && [
           <div style={{display: 'flex'}} key='title'>
-            <Typography variant='display1' style={{flex: '1'}}>
+            <Typography variant='display2' style={{flex: '1'}}>
               {tournamentName} Tournament
             </Typography>
             <Button variant='raised' color='secondary' onClick={() => toggleDeleteTournament({id: Tournament.id})}>
               Delete Tournament
             </Button>
           </div>,
+          hasPlacing && <Placing tournament={Tournament} key='placing' />,
           <Bracket tournamentId={Tournament.id} liftRefech={this.setBracketRefetch} key='bracket' />,
           editSetMatchesId && (
             <EditMatchesDialog
@@ -83,6 +88,15 @@ const query = gql`
     Tournament(id: $tournamentId) {
       id
       date
+      firstPlace {
+        name
+      }
+      secondPlace {
+        name
+      }
+      thirdPlace {
+        name
+      }
     }
   }
 `
