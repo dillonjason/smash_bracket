@@ -44,21 +44,48 @@ apiRouter
 
     if (setWinner) {
       const setProgress = await graphQl.getSetProgress({set})
+      const optionalFromSetProgress = _.get(setProgress, 'Set.optionalFromSet.id') ? await graphQl.getSetProgress({set: _.get(setProgress, 'Set.optionalFromSet.id')}) : null
       const winnerSet = _.get(setProgress, 'Set.winnerSet')
       const loserSet = _.get(setProgress, 'Set.loserSet')
-      const updatedNextSets = SetUtils.getUpdatedNextSets({setWinner, setLoser, winnerSet, loserSet})
-  
-      await Promise.all([
+      const optionalSetId = _.get(setProgress, 'Set.optionalSet.id')
+      const losersWinner = SetUtils.getLosersChamp({setProgress: optionalFromSetProgress || setProgress})
+
+      const promises = [
         graphQl.updateSetWinner({
           set,
           setWinner,
           winnerSet,
           loserSet
-        }),
-        graphQl.connectPlayersToMatches({
-          sets: updatedNextSets
         })
-      ])
+      ]
+
+      if (winnerSet) {
+        const updatedNextSets = SetUtils.getUpdatedNextSets({setWinner, setLoser, winnerSet, loserSet})
+        promises.push(
+          graphQl.connectPlayersToMatches({
+            sets: updatedNextSets
+          })
+        )
+      } else if (optionalSetId && losersWinner === setWinner) {
+        const optionalSet = await graphQl.getSetMatches({set: optionalSetId})
+        const updatedOptionalSets = [SetUtils.getUpdatedOptionalSet({optionalSet: optionalSet.Set, firstPlayer: setLoser, secondPlayer: setWinner})]
+        promises.push(
+          graphQl.connectPlayersToMatches({
+            sets: updatedOptionalSets
+          })
+        )
+      } else {
+        const tournament = _.get(setProgress, 'Set.tournament.id')
+        const firstPlace = setWinner
+        const secondPlace = setLoser
+        const thirdPlace = SetUtils.getThirdPlace({setProgress: optionalFromSetProgress || setProgress})
+
+        promises.push(
+          graphQl.setTournamentPlacing({tournament, firstPlace, secondPlace, thirdPlace})
+        )
+      }
+  
+      await Promise.all(promises)
     }
 
     ctx.status = 200

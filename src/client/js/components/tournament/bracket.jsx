@@ -93,7 +93,7 @@ export class BracketComponent extends Component {
   generateTournamentTree ({ Tournament, set, endBranch }) {
     const setData = find(Tournament.sets, tournamentSet => tournamentSet.id === set.id)
   
-    if ((isEmpty(setData.winnerFromSets) && isEmpty(setData.loserFromSets)) || endBranch) {
+    if ((isEmpty(setData.winnerFromSets) && isEmpty(setData.loserFromSets) && isEmpty(setData.optionalFromSet)) || endBranch) {
       return endBranch
         ? {
           attributes: {
@@ -145,6 +145,15 @@ export class BracketComponent extends Component {
           })
         }
       })
+
+      if (setData.optionalFromSet) {
+        const fromSet = setData.optionalFromSet
+        const fromSetData = find(Tournament.sets, tournamentSet => tournamentSet.id === fromSet.id)
+        children.push({
+          name: get(fromSetData, 'name'),
+          ...this.generateTournamentTree({ Tournament, set: fromSetData })
+        })
+      }
   
       return { attributes, children }
     }
@@ -176,7 +185,12 @@ export class BracketComponent extends Component {
 
     if (Tournament) {
       const finalSets = filter(Tournament.sets, set => !set.winnerSet && !set.loserSet)
-      const finalSet = find(finalSets, set => find(Tournament.sets, otherSet => get(otherSet, 'winnerSet.id', '') === set.id))
+      let finalSet = find(finalSets, set => find(Tournament.sets, otherSet => get(otherSet, 'winnerSet.id', '') === set.id))
+      const optionalSet = find(finalSets, set => set.id !== finalSet.id)
+
+      if (get(optionalSet, 'matches.0.firstPlayer.id')) {
+        finalSet = optionalSet
+      }
 
       treeData.push({
         name: finalSet.name,
@@ -260,6 +274,9 @@ const query = gql`
           id
         }
         loserFromSets {
+          id
+        }
+        optionalFromSet {
           id
         }
         matches {

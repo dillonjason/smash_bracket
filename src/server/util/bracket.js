@@ -223,6 +223,7 @@ export class Bracket {
     const winnerSets = _.flattenDeep(this.winners)
     const loserSets = _.flattenDeep(this.losers)
     const finalSet = _.first(_.first(this.finals))
+    const optionalSet = _.get(this.finals, `1.0`)
 
     _.forEach(this.winners, (round, roundIndex) => {
       _.forEach(round, set => {
@@ -248,6 +249,8 @@ export class Bracket {
         }
       })
     })
+
+    _.set(finalSet, 'optionalSet', optionalSet.id)
   }
 
   _setNewIds ({bracket, matchIds, setIds}) {

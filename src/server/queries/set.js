@@ -82,6 +82,17 @@ export const addWinnerLoserSetsToSetsQuery = ({sets}) => {
       `
     }
 
+    const optionalSet = set.optionalSet
+    if (optionalSet) {
+      query += `
+        ${set.id}_optional: setOptionalSet(optionalSetSetId: "${optionalSet}", optionalFromSetSetId: "${set.id}") {
+          optionalSetSet {
+            id
+          }
+        }
+      `
+    }
+
     return query
   }).join(' ')
 
@@ -96,6 +107,37 @@ export const getSetProgress = ({set}) => (`
     query {
       Set(id: "${set}") {
         id,
+        tournament {
+          id
+        },
+        matches {
+          firstPlayer {
+            id
+          }
+          secondPlayer {
+            id
+          }
+        },
+        winnerFromSets {
+          id,
+          matches {
+            firstPlayer {
+              id
+            }
+            secondPlayer {
+              id
+            }
+          }
+          setWinner {
+            id
+          }
+          winnerFromSets {
+            id
+          }
+          loserFromSets {
+            id
+          }
+        },
         winnerSet {
           id,
           matches {
@@ -120,10 +162,27 @@ export const getSetProgress = ({set}) => (`
             }
           }
         }
+        optionalSet {
+          id
+        }
+        optionalFromSet {
+          id
+        }
       }
     }
   `
 )
+
+export const getSetMatches = ({set}) => (`
+  query {
+    Set(id: "${set}") {
+      id,
+      matches {
+        id
+      }
+    }
+  }
+`)
 
 export const updateSetWinner = ({set, setWinner}) => {
   return `

@@ -61,7 +61,7 @@ export const deleteTournamentQuery = ({id, sets, matches}) => {
 
   return `
     mutation {
-      ${deleteTournament}  
+      ${deleteTournament}
       ${deleteSets}
       ${deleteMatches}
     }
@@ -77,6 +77,14 @@ export const getTournamentSetsQuery = ({id}) => `
           id
         }
       }
+    }
+  }
+`
+
+export const setTournamentPlacingQuery = ({tournament, firstPlace, secondPlace, thirdPlace}) => `
+  mutation {
+    updateTournament(id: "${tournament}", firstPlaceId: "${firstPlace}", secondPlaceId: "${secondPlace}", thirdPlaceId: "${thirdPlace}") {
+      id
     }
   }
 `
