@@ -1,0 +1,10 @@
+{
+  "verbose": true,
+  "watch": [
+    "server"
+  ],
+  "ignore": [
+    "**/*.tests.js"
+  ],
+  "ext": "ts, tsx, json"
+}
