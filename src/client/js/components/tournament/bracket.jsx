@@ -180,6 +180,22 @@ export class BracketComponent extends Component {
     }
   }
 
+  getRounds ({Tournament}) {
+    const rounds = {
+      finals: [],
+      winners: [],
+      losers: []
+    }
+
+    const finalSets = filter(Tournament.sets, set => !set.winnerSet && !set.loserSet)
+    rounds.finals.push(find(finalSets, set => find(Tournament.sets, otherSet => get(otherSet, 'winnerSet.id', '') === set.id)))
+    rounds.finals.push(find(finalSets, set => set.id !== rounds.finals[0].id))
+
+    
+
+    return rounds
+  }
+
   render () {
     const { loading, error, Tournament, refetch } = this.props.data
     const treeData = []
@@ -192,6 +208,8 @@ export class BracketComponent extends Component {
       if (get(optionalSet, 'matches.0.firstPlayer.id')) {
         finalSet = optionalSet
       }
+
+      const rounds = this.getRounds({Tournament})
 
       treeData.push({
         name: finalSet.name,
