@@ -129,8 +129,6 @@ export class Bracket {
       byes.push(winnersFirstRound.pop().id)
     }
 
-    console.log(JSON.stringify(firstRound))
-
     if (this.winners.length > 1) {
       const winnersRound = _.cloneDeep(this.winners[1])
       _.forEach(winnersRound, set => byes.unshift(set.id))
