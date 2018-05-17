@@ -12,6 +12,7 @@ import filter from 'lodash/filter'
 import isEmpty from 'lodash/isEmpty'
 import flow from 'lodash/flow'
 import pick from 'lodash/pick'
+import isEqual from 'lodash/isEqual'
 
 import Tree from 'react-d3-tree'
 
@@ -46,8 +47,8 @@ export class BracketComponent extends Component {
     })
   }
 
-  componentDidUpdate () {
-    if (this.props.data.Tournament) {
+  componentDidUpdate (prevProps) {
+    if (!isEqual(this.props.data.Tournament, prevProps.data.Tournament)) {
       const {refetch} = this.props.data
       this.props.liftRefech({refetch})
     }
