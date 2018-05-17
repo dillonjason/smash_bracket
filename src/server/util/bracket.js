@@ -129,6 +129,8 @@ export class Bracket {
       byes.push(winnersFirstRound.pop().id)
     }
 
+    console.log(JSON.stringify(firstRound))
+
     if (this.winners.length > 1) {
       const winnersRound = _.cloneDeep(this.winners[1])
       _.forEach(winnersRound, set => byes.unshift(set.id))
@@ -169,24 +171,31 @@ export class Bracket {
         }
       })
 
-      while (byes.length) {
-        let bye = byes.shift()
-        
+      let shouldHandleByes = byes.length > 0
+      while (shouldHandleByes) {
         const lastSetInRound = _.last(round)
 
-        if (lastSetInRound.firstPlayer && lastSetInRound.secondPlayer) {
-          const ids = _.split(lastSetInRound.id, '_')
-          const lastInt = Number(ids.pop()) + 1
-          ids.push(lastInt)
-          const newSet = {
-            name: this._getSetName(),
-            firstPlayer: bye,
-            id: ids.join('_')
+        if (lastSetInRound.firstPlayer && lastSetInRound.secondPlayer && byes.length === 1) {
+          shouldHandleByes = false
+        } else {
+          let bye = byes.shift()
+        
+          if (lastSetInRound.firstPlayer && lastSetInRound.secondPlayer) {
+            const ids = _.split(lastSetInRound.id, '_')
+            const lastInt = Number(ids.pop()) + 1
+            ids.push(lastInt)
+            const newSet = {
+              name: this._getSetName(),
+              firstPlayer: bye,
+              id: ids.join('_')
+            }
+
+            round.push(newSet)
+          } else {
+            lastSetInRound.secondPlayer = bye
           }
 
-          round.push(newSet)
-        } else {
-          lastSetInRound.secondPlayer = bye
+          shouldHandleByes = byes.length > 0
         }
       }
 
