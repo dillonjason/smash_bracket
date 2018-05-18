@@ -196,8 +196,6 @@ export class BracketComponent extends Component {
   
       rounds.push(newRound)
       this.fillRounds({Tournament, rounds})
-    } else {
-      return rounds
     }
   }
 
