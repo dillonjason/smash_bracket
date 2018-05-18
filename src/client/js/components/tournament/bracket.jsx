@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import get from 'lodash/get'
+import last from 'lodash/last'
 import forEach from 'lodash/forEach'
 import find from 'lodash/find'
 import filter from 'lodash/filter'
@@ -180,6 +181,26 @@ export class BracketComponent extends Component {
     }
   }
 
+  fillRounds ({Tournament, rounds}) {
+    const newRound = []
+    const lastRound = last(rounds)
+
+    const hasWinnerFromSets = find(lastRound, set => !isEmpty(set.winnerFromSets))
+
+    if (hasWinnerFromSets) {
+      forEach(lastRound, set => {
+        forEach(set.winnerFromSets, winnerFromSet => {
+          newRound.push(find(Tournament.sets, {id: winnerFromSet.id}))
+        })
+      })
+  
+      rounds.push(newRound)
+      this.fillRounds({Tournament, rounds})
+    } else {
+      return rounds
+    }
+  }
+
   getRounds ({Tournament}) {
     const rounds = {
       finals: [],
@@ -188,10 +209,17 @@ export class BracketComponent extends Component {
     }
 
     const finalSets = filter(Tournament.sets, set => !set.winnerSet && !set.loserSet)
-    rounds.finals.push(find(finalSets, set => find(Tournament.sets, otherSet => get(otherSet, 'winnerSet.id', '') === set.id)))
-    rounds.finals.push(find(finalSets, set => set.id !== rounds.finals[0].id))
+    rounds.finals.push([find(finalSets, set => find(Tournament.sets, otherSet => get(otherSet, 'winnerSet.id', '') === set.id))])
+    rounds.finals.push([find(finalSets, set => set.id !== rounds.finals[0][0].id)])
 
-    
+    rounds.winners.push([find(Tournament.sets, set => find(finalSets[0].winnerFromSets, {id: set.id}) && isEmpty(set.loserFromSets))])
+    const losersFinalSetId = get(find(finalSets[0].winnerFromSets, winnerFromSet => winnerFromSet.id !== rounds.winners[0][0].id), 'id')
+    rounds.losers.push([find(Tournament.sets, {id: losersFinalSetId})])
+
+    this.fillRounds({Tournament, rounds: rounds.winners})
+    this.fillRounds({Tournament, rounds: rounds.losers})
+
+    console.log(rounds)
 
     return rounds
   }
