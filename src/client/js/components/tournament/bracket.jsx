@@ -15,16 +15,14 @@ import flow from 'lodash/flow'
 import pick from 'lodash/pick'
 import isEqual from 'lodash/isEqual'
 
-import Tree from 'react-d3-tree'
-
 import Snackbar from 'material-ui/Snackbar'
-
-import { Node } from './node'
 
 import { toggleEditMatches } from './../../store/tournament/actions'
 
 import { Loading } from '../shared/loading'
 import { ApolloError } from '../shared/apollo_error'
+
+import {Tree} from './tree'
 
 export class BracketComponent extends Component {
   constructor (props) {

@@ -5,11 +5,14 @@ import map from 'lodash/map'
 export const TreeRound = ({round, multiplier}) => (
   <ul>
     {map(round, set => (
-      <li>
-        
+      <li key={set.id}>
+        {set.name}
       </li>
     ))}
   </ul>
 )
 
-TreeRound.prop
+TreeRound.propTypes = {
+  round: PropTypes.array.isRequired,
+  multiplier: PropTypes.number.isRequired
+}
