@@ -224,7 +224,7 @@ export class BracketComponent extends Component {
 
   render () {
     const { loading, error, Tournament, refetch } = this.props.data
-    const treeData = []
+    let rounds = {}
 
     if (Tournament) {
       const finalSets = filter(Tournament.sets, set => !set.winnerSet && !set.loserSet)
@@ -235,12 +235,7 @@ export class BracketComponent extends Component {
         finalSet = optionalSet
       }
 
-      const rounds = this.getRounds({Tournament})
-
-      treeData.push({
-        name: finalSet.name,
-        ...this.generateTournamentTree({ Tournament, set: finalSet })
-      })
+      rounds = this.getRounds({Tournament})
     }
 
     return (
@@ -249,31 +244,7 @@ export class BracketComponent extends Component {
         {error && <ApolloError refetch={refetch} />}
         {Tournament &&
           <Tree
-            data={treeData}
-            collapsible={false}
-            pathFunc={'elbow'}
-            nodeSvgShape={{
-              shape: 'none'
-            }}
-            nodeSize={{
-              x: 250,
-              y: 150
-            }}
-            allowForeignObjects
-            nodeLabelComponent={{
-              render: <Node />,
-              foreignObjectWrapper: {
-                x: -88,
-                y: -63
-              }
-            }}
-            separation={{
-              siblings: 2,
-              nonSiblings: 3
-            }}
-            zoom={0.6}
-            translate={this.state.translate}
-            onClick={this.onSetClick}
+            rounds={rounds.winners}
           />
         }
         <Snackbar
