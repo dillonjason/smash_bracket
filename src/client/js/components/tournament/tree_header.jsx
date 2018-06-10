@@ -1,12 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { withStyles } from 'material-ui/styles'
 
-export const TreeHeader = ({children}) => (
-  <div className='tree-header-component'>
+const styles = {
+  container: {
+    textAlign: 'center',
+    width: '200px'
+  }
+}
+
+const TreeHeaderComponent = ({children, classes}) => (
+  <div className={`tree-header-component ${classes.container}`}>
     {children}
   </div>
 )
 
-TreeHeader.propTypes = {
-  children: PropTypes.string.isRequired
+TreeHeaderComponent.propTypes = {
+  children: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired
 }
+
+export const TreeHeader = withStyles(styles)(TreeHeaderComponent)

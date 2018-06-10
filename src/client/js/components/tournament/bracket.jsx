@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import get from 'lodash/get'
-import last from 'lodash/last'
+import first from 'lodash/first'
 import forEach from 'lodash/forEach'
 import find from 'lodash/find'
 import filter from 'lodash/filter'
@@ -181,7 +181,7 @@ export class BracketComponent extends Component {
 
   fillRounds ({Tournament, rounds}) {
     const newRound = []
-    const lastRound = last(rounds)
+    const lastRound = first(rounds)
 
     const hasWinnerFromSets = find(lastRound, set => !isEmpty(set.winnerFromSets))
 
@@ -192,7 +192,7 @@ export class BracketComponent extends Component {
         })
       })
   
-      rounds.push(newRound)
+      rounds.unshift(newRound)
       this.fillRounds({Tournament, rounds})
     }
   }
