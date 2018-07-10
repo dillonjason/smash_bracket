@@ -108,7 +108,7 @@ export class Bracket {
   _generateLosersBracket () {
     const winnersFirstRound = _.cloneDeep(this.winners[0])
     const losersBye = winnersFirstRound.length % 2
-    const numFirstRoundPlayers = (winnersFirstRound.length - losersBye) / 2
+    const numFirstRoundPlayers = winnersFirstRound.length - losersBye
     const numFirstRoundSets = numFirstRoundPlayers / 2
     let firstRound = []
 
